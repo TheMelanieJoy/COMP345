@@ -11,37 +11,45 @@ private:
 public:
 	FantasyRaceBanner(string, int);
 	string getName();
+	int getRaceTokens();
 };
 
-class Amazons : FantasyRaceBanner {
+class Amazons : public FantasyRaceBanner {
 private:
 
 public:
 	Amazons();
 };
 
-class Dwarves : FantasyRaceBanner {
+class Dwarves : public FantasyRaceBanner {
 private:
 
 public:
 	Dwarves();
 };
 
-class Elves : FantasyRaceBanner {
+class Elves : public FantasyRaceBanner {
 private:
 
 public:
 	Elves();
 };
 
-class Halflings : FantasyRaceBanner {
+class Ghouls : public FantasyRaceBanner {
+private:
+
+public:
+	Ghouls();
+};
+
+class Halflings : public FantasyRaceBanner {
 private:
     int holes_in_the_ground = 2;
 public:
 	Halflings();
 };
 
-class Trolls : FantasyRaceBanner {
+class Trolls : public FantasyRaceBanner {
 private:
     int trollLairs = 10;
 public:

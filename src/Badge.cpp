@@ -1,15 +1,19 @@
-#include "FantasyRaceBanner.h"
-
+#include "stdafx.h"
+#include "Badge.h"
 #include <string>
 using namespace std;
 
-Badge::Badge(string name, raceTokens) {
+Badge::Badge(string name, int raceTokens) {
 	this->name = name;
-    this->raceTokens;
+    this->raceTokens = raceTokens;
 }
 
 string Badge::getName() {
 	return name;
+}
+
+int Badge::getRaceTokens() {
+	return raceTokens;
 }
 
 Alchemist::Alchemist() : Badge("Alchemist", 4) {

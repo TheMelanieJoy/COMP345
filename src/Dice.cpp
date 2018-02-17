@@ -1,3 +1,5 @@
+#include "stdafx.h"
+#include "Dice.h"
 #include <ctime>
 #include <iostream>
 using namespace std;

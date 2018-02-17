@@ -1,5 +1,5 @@
 #pragma once
-#define FANTASYRACEBANNER_H
+#define BADGE_H
 
 #include <string>
 using namespace std;
@@ -11,44 +11,45 @@ private:
 public:
 	Badge(string, int);
 	string getName();
+	int getRaceTokens();
 };
 
-class Alchemist : Badge {
+class Alchemist : public Badge {
 private:
 
 public:
-	Badge();
+	Alchemist();
 };
 
-class Berserk : Badge {
+class Berserk : public Badge {
 private:
 
 public:
 	Berserk();
 };
 
-class Bivouacking : Badge {
+class Bivouacking : public Badge {
 private:
     int encampments = 5;
 public:
 	Bivouacking();
 };
 
-class DragonMaster : Badge {
+class DragonMaster : public Badge {
 private:
     int dragon = 1;
 public:
-	DragonMaser();
+	DragonMaster();
 };
 
-class Fortified : Badge {
+class Fortified : public Badge {
 private:
     int fortresses = 6;
 public:
 	Fortified();
 };
 
-class Heroic : Badge {
+class Heroic : public Badge {
 private:
     int heroes = 2;
 public:
