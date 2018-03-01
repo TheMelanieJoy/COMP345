@@ -6,24 +6,25 @@
 #include "FantasyRaceBanner.h"
 #include "Badge.h"
 #include "Player.h"
-#include "MapReader.cpp"
+#include "MapReader.h"
+#include "Map.h"
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <ctime>
 #include <string>
-
-#ifndef MAP
-#define MAP
-#include "Map.cpp"
-#endif
 using namespace std;
+
+vector<FantasyRaceBanner>races = { Amazons(),Dwarves(),Elves(),Ghouls(),Giants(),Halflings(),Humans(),Orcs(),Ratmen(),Skeletons(),Sorcerers(),Tritons(),Trolls(),Wizards() };
+vector<Badge>badges = { Alchemist(),Berserk(),Bivouacking(),Commando(),Diplomat(),DragonMaster(),Flying(),Forest(),Fortified(),Heroic(),Hill(),Merchant(),Mounted(),Pillaging(),Seafaring(),Spirit(),Stout(),Swamp(),Underworld(),Wealthy() };
+vector<Player> players;
+int numberOfTurns = 10;
+int currentTurn = 1;
 
 void setup() {
 
 	cout << "Setting up game for 2 players..." << endl;
 	int numberOfPlayers = 2;
-	vector<Player> players;
 	for (int i = 0; i < numberOfPlayers; i++) {
 		string name = "Player " + to_string(i);
 		Player player = Player(name);
@@ -33,22 +34,9 @@ void setup() {
 	//Shuffles race banners and badges' index
 	srand(time(NULL));
 
-	vector<FantasyRaceBanner>races = { Amazons(),Dwarves(),Elves(),Ghouls(),Halflings(),Trolls() };
-	vector<Badge>badges = { Alchemist(),Berserk(),Bivouacking(),DragonMaster(),Fortified(),Heroic() };
+
 	std::random_shuffle(races.begin(), races.end());
 	std::random_shuffle(badges.begin(), badges.end());
-
-	for(int i = 0; i < 6; i++)
-		cout << i+1 << ". " << badges[i].getName() << " " << races[i].getName() << endl;
-
-	//Tests picks_race()
-	cout << "(Assume player 1 selects choice 1)" << endl;
-	int selectedRace = 0;
-	players.at(0).picks_race(races.at(selectedRace), badges.at(selectedRace));
-	races.erase(races.begin() + selectedRace);
-	badges.erase(badges.begin() + selectedRace);
-	cout << players.at(1).getName() << " selects " << players.at(0).getBadge().getName() << " " << players.at(0).getRace().getName() << endl;
-
 
 	std::cout << "Manually adding map \n";
 	//making a new map
@@ -89,9 +77,49 @@ void setup() {
 	std::cout << "\n";
 }
 
+void first_turn(Player player) {
+
+	//Picks a Race and Special Power combo
+	for (int i = 0; i < 6; i++)
+		cout << i + 1 << ". " << badges[i].getName() << " " << races[i].getName() << endl;
+
+	cout << player.getName() << ", Please select a race (Enter its assigned number): ";
+	int selectedRace = 0;
+	while (!(cin >> selectedRace)) {
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cout << "Please enter a number from 1 to 6: ";
+	}
+	player.picks_race(races.at(selectedRace - 1), badges.at(selectedRace - 1));
+	races.erase(races.begin() + selectedRace - 1);
+	badges.erase(badges.begin() + selectedRace - 1);
+
+	cout << player.getName() << " selects " << player.getBadge()->getName() << " " << player.getRace()->getName() << endl;
+
+	//Conquers some Regions
+
+	//Scores some Victory coins
+
+	currentTurn++;
+}
+
+void following_turns(Player player) {
+
+}
+
 int main()
 {
 	setup();
+
+	//Each player plays the first turn of the game
+	for (auto &player : players)
+		first_turn(player);
+
+	//Each player plays the following turns until the game is over
+	while (currentTurn < numberOfTurns) {
+		for (auto &player : players)
+			following_turns(player);
+	}
 
     cout << "Testing reinforcements dice" << std::endl;
     cout << "Rolling die 1..." << std::endl;

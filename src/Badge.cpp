@@ -8,7 +8,7 @@ Badge::Badge() {
 	raceTokens = 0;
 }
 
-Badge::Badge(string name, int raceTokens) {
+Badge::Badge(const char* name, int raceTokens) {
 	this->name = name;
     this->raceTokens = raceTokens;
 }
@@ -24,20 +24,59 @@ int Badge::getRaceTokens() {
 Alchemist::Alchemist() : Badge("Alchemist", 4) {
 }
 
-Berserk::Berserk() : Badge(std::string("Berserk"), 4) {
+Berserk::Berserk() : Badge("Berserk", 4) {
 }
 
-Bivouacking::Bivouacking() : Badge(std::string("Bivouacking"), 5) {
+Bivouacking::Bivouacking() : Badge("Bivouacking", 5) {
 }
 
-DragonMaster::DragonMaster() : Badge(std::string("Dragon Master"), 5) {
-    
+Commando::Commando() : Badge("Commando", 4) {
 }
 
-Fortified::Fortified() : Badge(std::string("Fortified"), 3) {
-    
+Diplomat::Diplomat() : Badge("Diplomat", 5) {
 }
 
-Heroic::Heroic() : Badge(std::string("Heroic"), 5) {
-    
+DragonMaster::DragonMaster() : Badge("Dragon Master", 5) {
+}
+
+Flying::Flying() : Badge("Flying", 5) {
+}
+
+Forest::Forest() : Badge("Forest", 4) {
+}
+
+Fortified::Fortified() : Badge("Fortified", 3) {
+}
+
+Heroic::Heroic() : Badge("Heroic", 5) {
+}
+
+Hill::Hill() : Badge("Hill", 4) {
+}
+
+Merchant::Merchant() : Badge("Merchant", 2) {
+}
+
+Mounted::Mounted() : Badge("Mounted", 5) {
+}
+
+Pillaging::Pillaging() : Badge("Pillaging", 5) {
+}
+
+Seafaring::Seafaring() : Badge("Seafaring", 5) {
+}
+
+Spirit::Spirit() : Badge("Spirit", 5) {
+}
+
+Stout::Stout() : Badge("Stout", 4) {
+}
+
+Swamp::Swamp() : Badge("Swamp", 4) {
+}
+
+Underworld::Underworld() : Badge("Underworld", 5) {
+}
+
+Wealthy::Wealthy() : Badge("Wealthy", 4) {
 }

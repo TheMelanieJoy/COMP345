@@ -7,21 +7,21 @@ using namespace std;
 Player::Player(string name) {
 	this->name = name;
 	victoryCoins = 5;
-	badge = Badge();
-	declinedBadge = Badge();
-	race = FantasyRaceBanner();
-	declinedRace = FantasyRaceBanner();
+	badge = NULL;
+	declinedBadge = NULL;
+	race = NULL;
+	declinedRace = NULL;
 }
 
 string Player::getName() {
 	return name;
 }
 
-FantasyRaceBanner Player::getRace() {
+FantasyRaceBanner* Player::getRace() {
 	return race;
 }
 
-Badge Player::getBadge() {
+Badge* Player::getBadge() {
 	return badge;
 }
 
@@ -30,8 +30,8 @@ void Player::add_coins(int coins) {
 }
 
 void Player::picks_race(FantasyRaceBanner race, Badge badge) {
-	this->race = race;
-	this->badge = badge;
+	this->race = &race;
+	this->badge = &badge;
 	raceTokens = race.getRaceTokens() + badge.getRaceTokens();
 }
 
@@ -57,17 +57,11 @@ bool Player::conquers(Map m, size_t region) {
 			return false;
 		}
 	}
-	
-
-	return true;		//Placeholder return value
 }
 
 void Player::scores(Map m) {
-    
 	for(const auto region : m.regions) {		//Maybe add vector in this function's parameter?
 		if(region.owner.compare(getName()))
 			victoryCoins += 1;
 	}
-
-	
 }
