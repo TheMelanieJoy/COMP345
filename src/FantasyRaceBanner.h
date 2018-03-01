@@ -9,6 +9,7 @@ private:
 	string name;
     int raceTokens;
 public:
+	FantasyRaceBanner();
 	FantasyRaceBanner(string, int);
 	string getName();
 	int getRaceTokens();

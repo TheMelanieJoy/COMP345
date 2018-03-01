@@ -7,14 +7,22 @@ using namespace std;
 Player::Player(string name) {
 	this->name = name;
 	victoryCoins = 5;
-	badge = NULL;
-	declinedBadge = NULL;
-	race = NULL;
-	declinedRace = NULL;
+	badge = Badge();
+	declinedBadge = Badge();
+	race = FantasyRaceBanner();
+	declinedRace = FantasyRaceBanner();
 }
 
 string Player::getName() {
 	return name;
+}
+
+FantasyRaceBanner Player::getRace() {
+	return race;
+}
+
+Badge Player::getBadge() {
+	return badge;
 }
 
 void Player::add_coins(int coins) {
@@ -22,26 +30,26 @@ void Player::add_coins(int coins) {
 }
 
 void Player::picks_race(FantasyRaceBanner race, Badge badge) {
-	this->race = &race;
-	this->badge = &badge;
+	this->race = race;
+	this->badge = badge;
 	raceTokens = race.getRaceTokens() + badge.getRaceTokens();
 }
 
-bool Player::conquers() {
-	/*
+bool Player::conquers(Map m, size_t region) {
 	//Add region to function's parameter?
-	int neededTokens = region.tokens() + 2;		//tokens() refers to the total tokens present on map (e.g. enemies, lost tribes, mountains)
+	int neededTokens = m.regions.at(region).tokens + 2;		//tokens() refers to the total tokens present on map (e.g. enemies, lost tribes, mountains)
+
 	if(raceTokens >= neededTokens) {		
 		//Return 1 token to old conquerer
-		region.setConquerer(player.getName());		//Yay victory
+		m.regions.at(region).owner = getName();		//Yay victory
 		raceTokens -= neededTokens;
 		return true;
 	}
 	else {
-		int totalTokens = player.raceTokens() + roll();
+		int totalTokens = raceTokens + roll();
 		if(totalTokens >= neededTokens) {
 			//Return 1 token to old conquerer
-			region.setConquerer(player.getName());		//Yay victory
+			m.regions.at(region).owner = getName();		//Yay victory
 			raceTokens = 0;
 			return true;
 		}
@@ -49,16 +57,17 @@ bool Player::conquers() {
 			return false;
 		}
 	}
-	*/
+	
 
 	return true;		//Placeholder return value
 }
 
-void Player::scores() {
-    /*
-	for(Region region : vector<Regions> map {		//Maybe add vector in this function's parameter?
-		if(region.getConquerer().compare(player.getName())
+void Player::scores(Map m) {
+    
+	for(const auto region : m.regions) {		//Maybe add vector in this function's parameter?
+		if(region.owner.compare(getName()))
 			victoryCoins += 1;
 	}
-	*/
+
+	
 }

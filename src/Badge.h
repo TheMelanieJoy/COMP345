@@ -9,6 +9,7 @@ private:
 	string name;
     int raceTokens;
 public:
+	Badge();
 	Badge(string, int);
 	string getName();
 	int getRaceTokens();
