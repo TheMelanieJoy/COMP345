@@ -1,12 +1,13 @@
-#define MAP_READER
+#pragma once
+#define MAP_READER_H
 
 #include "stdafx.h"
+#include "Map.h"
 #include <iostream>
 #include <string>
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include "Map.h"
 
 class MapReader {
 public:

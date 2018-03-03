@@ -7,10 +7,10 @@ using namespace std;
 Player::Player(string name) {
 	this->name = name;
 	victoryCoins = 5;
-	badge = NULL;
-	declinedBadge = NULL;
 	race = NULL;
 	declinedRace = NULL;
+	badge = NULL;
+	declinedBadge = NULL;
 }
 
 string Player::getName() {
@@ -64,4 +64,13 @@ void Player::scores(Map m) {
 		if(region.owner.compare(getName()))
 			victoryCoins += 1;
 	}
+}
+
+void Player::declines_race(Deck* deck) {
+	if (declinedRace != NULL) {
+		/*deck->addRace(declinedRace);
+		deck->addBadge(declinedBadge);*/
+	}
+	declinedRace = race;
+	race = NULL;
 }

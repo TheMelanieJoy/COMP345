@@ -1,4 +1,5 @@
-#define MAP
+#pragma once
+#define MAP_H
 
 #include "stdafx.h"
 #include <vector>

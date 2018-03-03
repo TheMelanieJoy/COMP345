@@ -4,16 +4,16 @@
 #include "FantasyRaceBanner.h"
 #include "Badge.h"
 #include "Map.h"
-
+#include "Deck.h"
 
 class Player {
 private:
 	string name;
     int victoryCoins;
-    Badge* badge;
+	FantasyRaceBanner* race;
+	FantasyRaceBanner* declinedRace;
+	Badge* badge;
     Badge* declinedBadge;
-    FantasyRaceBanner* race;
-    FantasyRaceBanner* declinedRace;
 	int raceTokens;
 
 public:
@@ -25,4 +25,5 @@ public:
 	void picks_race(FantasyRaceBanner, Badge);
 	bool conquers(Map, size_t);
 	void scores(Map);
+	void declines_race(Deck*);
 };

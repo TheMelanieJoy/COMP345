@@ -1,13 +1,10 @@
 #include "stdafx.h"
+#include "MapReader.h"
 #include <iostream>
 #include <string>
 #include <vector>
 #include <fstream>
 #include <sstream>
-
-#include "MapReader.h"
-
-MapReader::MapReader(std::string p) : path(p) {};
 
 Map MapReader::makeMap() {
 

@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "Dice.h"
+#include "Deck.h"
 #include "FantasyRaceBanner.h"
 #include "Badge.h"
 #include "Player.h"
@@ -10,23 +11,42 @@
 #include "Map.h"
 #include <iostream>
 #include <vector>
-#include <algorithm>
 #include <ctime>
 #include <string>
 using namespace std;
 
-vector<FantasyRaceBanner>races = { Amazons(),Dwarves(),Elves(),Ghouls(),Giants(),Halflings(),Humans(),Orcs(),Ratmen(),Skeletons(),Sorcerers(),Tritons(),Trolls(),Wizards() };
-vector<Badge>badges = { Alchemist(),Berserk(),Bivouacking(),Commando(),Diplomat(),DragonMaster(),Flying(),Forest(),Fortified(),Heroic(),Hill(),Merchant(),Mounted(),Pillaging(),Seafaring(),Spirit(),Stout(),Swamp(),Underworld(),Wealthy() };
 vector<Player> players;
-int numberOfTurns = 10;
-int currentTurn = 1;
+int numberOfTurns;
+Deck deck = Deck();
 
 void setup() {
+	//Requests the number of players
+	cout << "Select the number of players in the game (2-5 players): ";
+	int numberOfPlayers = 0;
+	//Number must be between 2 and 5 inclusive
+	while (!(cin >> numberOfPlayers) || (numberOfPlayers < 2 || numberOfPlayers > 5)) {
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cout << "Enter a valid number of players: ";
+	}
 
-	cout << "Setting up game for 2 players..." << endl;
-	int numberOfPlayers = 2;
+	//Sets the number of turns for the game based on the number of players
+	switch (numberOfPlayers) {
+		case 4:
+			numberOfTurns = 9;
+			break;
+		case 5:
+			numberOfTurns = 8;
+			break;
+		default:
+			numberOfTurns = 10;
+	}
+
+	//Gets names for all players
 	for (int i = 0; i < numberOfPlayers; i++) {
 		string name = "Player " + to_string(i);
+		cout << "Player " << to_string(i + 1) << ", please enter your name: ";
+		cin >> name;
 		Player player = Player(name);
 		players.push_back(player);
 	}
@@ -34,10 +54,7 @@ void setup() {
 	//Shuffles race banners and badges' index
 	srand(time(NULL));
 
-
-	std::random_shuffle(races.begin(), races.end());
-	std::random_shuffle(badges.begin(), badges.end());
-
+	/**
 	std::cout << "Manually adding map \n";
 	//making a new map
 	Map g = Map(10, 20);
@@ -74,25 +91,25 @@ void setup() {
 	std::cout << "Printing map \n";
 	auto dftResult = m.dft(0);
 	for (const auto v : dftResult) std::cout << " " << v;
-	std::cout << "\n";
+	std::cout << "\n";*/
 }
 
 void first_turn(Player player) {
 
 	//Picks a Race and Special Power combo
-	for (int i = 0; i < 6; i++)
-		cout << i + 1 << ". " << badges[i].getName() << " " << races[i].getName() << endl;
+    deck.displayAvailableRaces();
 
-	cout << player.getName() << ", Please select a race (Enter its assigned number): ";
+	cout << player.getName() << ", select a race (Enter its assigned number): ";
 	int selectedRace = 0;
 	while (!(cin >> selectedRace)) {
 		cin.clear();
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		cout << "Please enter a number from 1 to 6: ";
 	}
-	player.picks_race(races.at(selectedRace - 1), badges.at(selectedRace - 1));
-	races.erase(races.begin() + selectedRace - 1);
-	badges.erase(badges.begin() + selectedRace - 1);
+    
+	player.picks_race(deck.getRace(selectedRace - 1), deck.getBadge(selectedRace - 1));
+	deck.removeRace(selectedRace - 1);
+	deck.removeBadge(selectedRace - 1);
 
 	cout << player.getName() << " selects " << player.getBadge()->getName() << " " << player.getRace()->getName() << endl;
 
@@ -100,11 +117,23 @@ void first_turn(Player player) {
 
 	//Scores some Victory coins
 
-	currentTurn++;
 }
 
 void following_turns(Player player) {
-
+    cout << player.getName() << ", it is now your turn. What will you do?" << endl
+        << "1. Decline my race." << endl
+        << "2. Conquer." << endl;
+    int selectedMove;
+    while (!(cin >> selectedMove)) {
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cout << "Please enter a valid number.";
+	}
+    
+    //Player declines race and ends turn
+    if(selectedMove == 1) {
+        
+    }
 }
 
 int main()
@@ -112,18 +141,21 @@ int main()
 	setup();
 
 	//Each player plays the first turn of the game
+	int currentTurn = 1;
+	cout << "It is now Turn " << currentTurn << endl;
 	for (auto &player : players)
 		first_turn(player);
+	currentTurn++;
 
 	//Each player plays the following turns until the game is over
-	while (currentTurn < numberOfTurns) {
+	while (currentTurn <= numberOfTurns) {
+		cout << "It is now Turn " << currentTurn << endl;
 		for (auto &player : players)
 			following_turns(player);
+		currentTurn++;
 	}
 
-    cout << "Testing reinforcements dice" << std::endl;
-    cout << "Rolling die 1..." << std::endl;
-    int dice1 = roll();
+	//Game ends
 
     return 0;
 }
