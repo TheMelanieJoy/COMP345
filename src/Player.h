@@ -22,7 +22,7 @@ public:
 	FantasyRaceBanner* getRace();
 	Badge* getBadge();
     void add_coins(int);
-	void picks_race(FantasyRaceBanner, Badge);
+	void picks_race(FantasyRaceBanner*, Badge*);
 	bool conquers(Map, size_t);
 	void scores(Map);
 	void declines_race(Deck*);

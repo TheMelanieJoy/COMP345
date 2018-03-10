@@ -29,10 +29,10 @@ void Player::add_coins(int coins) {
     victoryCoins += coins;
 }
 
-void Player::picks_race(FantasyRaceBanner race, Badge badge) {
-	this->race = &race;
-	this->badge = &badge;
-	raceTokens = race.getRaceTokens() + badge.getRaceTokens();
+void Player::picks_race(FantasyRaceBanner* race, Badge* badge) {
+	this->race = race;
+	this->badge = badge;
+	raceTokens = race->getRaceTokens() + badge->getRaceTokens();
 }
 
 bool Player::conquers(Map m, size_t region) {
@@ -67,9 +67,10 @@ void Player::scores(Map m) {
 }
 
 void Player::declines_race(Deck* deck) {
+	//Returns old declined race and badge to the bottom of the deck
 	if (declinedRace != NULL) {
-		/*deck->addRace(declinedRace);
-		deck->addBadge(declinedBadge);*/
+		deck->addRace(declinedRace);
+		deck->addBadge(declinedBadge);
 	}
 	declinedRace = race;
 	race = NULL;

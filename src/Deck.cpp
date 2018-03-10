@@ -7,51 +7,59 @@
 using std::cout;
 
 Deck::Deck() {
-    addRace(Amazons());
-    addRace(Dwarves());
-    addRace(Elves());
-    addRace(Ghouls());
-    addRace(Giants());
-    addRace(Halflings());
-    addRace(Humans());
-    addRace(Orcs());
-    addRace(Ratmen());
-    addRace(Skeletons());
-    addRace(Sorcerers());
-    addRace(Tritons());
-    addRace(Trolls());
-    addRace(Wizards());
+    addRace(new Amazons());
+    addRace(new Dwarves());
+    addRace(new Elves());
+    addRace(new Ghouls());
+    addRace(new Giants());
+    addRace(new Halflings());
+    addRace(new Humans());
+    addRace(new Orcs());
+    addRace(new Ratmen());
+    addRace(new Skeletons());
+    addRace(new Sorcerers());
+    addRace(new Tritons());
+    addRace(new Trolls());
+    addRace(new Wizards());
     
-    addBadge(Alchemist());
-    addBadge(Berserk());
-    addBadge(Bivouacking());
-    addBadge(Commando());
-    addBadge(Diplomat());
-    addBadge(DragonMaster());
-    addBadge(Flying());
-    addBadge(Forest());
-    addBadge(Fortified());
-    addBadge(Heroic());
-    addBadge(Hill());
-    addBadge(Merchant());
-    addBadge(Mounted());
-    addBadge(Pillaging());
-    addBadge(Seafaring());
-    addBadge(Spirit());
-    addBadge(Stout());
-    addBadge(Swamp());
-    addBadge(Underworld());
-    addBadge(Wealthy());
+    addBadge(new Alchemist());
+    addBadge(new Berserk());
+    addBadge(new Bivouacking());
+    addBadge(new Commando());
+    addBadge(new Diplomat());
+    addBadge(new DragonMaster());
+    addBadge(new Flying());
+    addBadge(new Forest());
+    addBadge(new Fortified());
+    addBadge(new Heroic());
+    addBadge(new Hill());
+    addBadge(new Merchant());
+    addBadge(new Mounted());
+    addBadge(new Pillaging());
+    addBadge(new Seafaring());
+    addBadge(new Spirit());
+    addBadge(new Stout());
+    addBadge(new Swamp());
+    addBadge(new Underworld());
+    addBadge(new Wealthy());
     
     std::random_shuffle(races.begin(), races.end());
 	std::random_shuffle(badges.begin(), badges.end());
 }
 
-void Deck::addRace(FantasyRaceBanner race) {
+Deck::~Deck() {
+	for (auto race : races)
+		delete race;
+
+	for (auto badge : badges)
+		delete badge;
+}
+
+void Deck::addRace(FantasyRaceBanner* race) {
     races.push_back(race);
 }
 
-void Deck::addBadge(Badge badge) {
+void Deck::addBadge(Badge* badge) {
     badges.push_back(badge);
 }
 
@@ -63,15 +71,15 @@ void Deck::removeBadge(int badgeIndex) {
  	badges.erase(badges.begin() + badgeIndex);   
 }
 
-FantasyRaceBanner Deck::getRace(int raceIndex) {
+FantasyRaceBanner* Deck::getRace(int raceIndex) {
 	return races.at(raceIndex);
 }
 
-Badge Deck::getBadge(int badgeIndex) {
+Badge* Deck::getBadge(int badgeIndex) {
 	return badges.at(badgeIndex);
 }
 
 void Deck::displayAvailableRaces() {
     for (int i = 0; i < 6; i++)
-		cout << i + 1 << ". " << badges.at(i).getName() << " " << races.at(i).getName() << endl;
+		cout << i + 1 << ". " << badges.at(i)->getName() << " " << races.at(i)->getName() << endl;
 }

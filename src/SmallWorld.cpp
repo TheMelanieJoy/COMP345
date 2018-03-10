@@ -17,9 +17,9 @@
 
 using namespace std;
 
-vector<Player> players;
+vector<Player*> players;
 int numberOfTurns;
-Deck deck = Deck();
+Deck* deck = new Deck();
 
 
 string dir() {
@@ -136,7 +136,7 @@ void setup() {
 		cout << "Player " << to_string(i + 1) << ", please enter your name: ";
 		cin >> name;
 		Player player = Player(name);
-		players.push_back(player);
+		players.push_back(new Player(name));
 	}
 
 	//Shuffles race banners and badges' index
@@ -179,24 +179,23 @@ void setup() {
 	std::cout << "\n";*/
 }
 
-void first_turn(Player player) {
+void first_turn(Player* player) {
 
 	//Picks a Race and Special Power combo
-    deck.displayAvailableRaces();
+    deck->displayAvailableRaces();
 
-	cout << player.getName() << ", select a race (Enter its assigned number): ";
+	cout << player->getName() << ", select a race (Enter its assigned number): ";
 	int selectedRace = 0;
 	while (!(cin >> selectedRace)) {
 		cin.clear();
-		//cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		cout << "Please enter a number from 1 to 6: ";
 	}
     
-	player.picks_race(deck.getRace(selectedRace - 1), deck.getBadge(selectedRace - 1));
-	deck.removeRace(selectedRace - 1);
-	deck.removeBadge(selectedRace - 1);
+	player->picks_race(deck->getRace(selectedRace - 1), deck->getBadge(selectedRace - 1));
+	deck->removeRace(selectedRace - 1);
+	deck->removeBadge(selectedRace - 1);
 
-	cout << player.getName() << " selects " << player.getBadge()->getName() << " " << player.getRace()->getName() << endl;
+	cout << player->getName() << " selects " << player->getBadge()->getName() << " " << player->getRace()->getName() << endl << endl;
 
 	//Conquers some Regions
 
@@ -204,21 +203,54 @@ void first_turn(Player player) {
 
 }
 
-void following_turns(Player player) {
-    cout << player.getName() << ", it is now your turn. What will you do?" << endl
+void following_turns(Player* player) {
+	//Player selects new race if they declined in the previous one
+	if (player->getRace() == NULL) {
+		deck->displayAvailableRaces();
+
+		cout << player->getName() << ", select a race (Enter its assigned number): ";
+		int selectedRace = 0;
+		while (!(cin >> selectedRace)) {
+			cin.clear();
+			//cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << "Please enter a number from 1 to 6: ";
+		}
+
+		player->picks_race(deck->getRace(selectedRace - 1), deck->getBadge(selectedRace - 1));
+		deck->removeRace(selectedRace - 1);
+		deck->removeBadge(selectedRace - 1);
+
+		cout << player->getName() << " selects " << player->getBadge()->getName() << " " << player->getRace()->getName() << endl << endl;
+	}
+
+    cout << player->getName() << ", it is now your turn. What will you do?" << endl
         << "1. Decline my race." << endl
         << "2. Conquer." << endl;
     int selectedMove;
-    while (!(cin >> selectedMove)) {
+	while (!(cin >> selectedMove) || (selectedMove < 1 || selectedMove > 2)) {
 		cin.clear();
-		//cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		cout << "Please enter a valid number.";
+		cout << "Please enter a valid number: ";
 	}
     
-    //Player declines race and ends turn
+    //Entering in decline
     if(selectedMove == 1) {
-        
+		//Player puts race in decline
+		cout << "The " << player->getBadge()->getName() << " " << player->getRace()->getName() << " is now declined." << endl << endl;
+		player->declines_race(deck);
+
+		//Player scores victory points
+		//TODO add player.scores(...)
     }
+	//Expanding through new conquests
+	else if(selectedMove == 2) {
+		//TODO add player.conquers(...)
+		//Available conquest moves:
+		// - Ready your troops
+		// - Conquer
+		// - Abandoning a region
+
+		//TODO add player.scores(...)
+	}
 }
 
 
@@ -229,20 +261,24 @@ int main()
 
 	//Each player plays the first turn of the game
 	int currentTurn = 1;
-	cout << "It is now Turn " << currentTurn << endl;
+	cout << "\nIt is now Turn " << currentTurn << endl << endl;
 	for (auto &player : players)
 		first_turn(player);
 	currentTurn++;
 
 	//Each player plays the following turns until the game is over
 	while (currentTurn <= numberOfTurns) {
-		cout << "It is now Turn " << currentTurn << endl;
+		cout << "It is now Turn " << currentTurn << endl << endl;
 		for (auto &player : players)
 			following_turns(player);
 		currentTurn++;
 	}
 
 	//Game ends
+	//Destroy all pointer values
+	delete deck;
+	for (auto player : players)
+		delete player;
 
     return 0;
 }

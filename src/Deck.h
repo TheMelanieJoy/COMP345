@@ -8,15 +8,16 @@
 
 class Deck {
 private:
-    vector<FantasyRaceBanner> races;
-    vector<Badge> badges;
+    vector<FantasyRaceBanner*> races;
+    vector<Badge*> badges;
 public:
 	Deck();
-	void addRace(FantasyRaceBanner);
-    void addBadge(Badge);
+	~Deck();
+	void addRace(FantasyRaceBanner*);
+    void addBadge(Badge*);
     void removeRace(int);
     void removeBadge(int);
-	FantasyRaceBanner getRace(int);
-	Badge getBadge(int);
+	FantasyRaceBanner* getRace(int);
+	Badge* getBadge(int);
     void displayAvailableRaces();
 };
