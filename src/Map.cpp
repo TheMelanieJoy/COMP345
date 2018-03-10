@@ -35,6 +35,19 @@ void Map::addRegion(string name) {
 	regions.push_back(region(name));
 }
 
+void Map::addRegion(string name, char type) {
+	switch (type) {
+	case '2': regions.push_back(region(name, true, false));
+		break;
+	case '1': regions.push_back(region(name, false, true));
+		break;
+	case '0':
+	default:
+		regions.push_back(region(name));
+	}
+	
+}
+
 void Map::addLink(const size_t region1Index, const size_t region2Index) {
 	//if the link index is bigger than the ammount of regions, something has gone wrong
 	if (regions.size() <= region1Index || regions.size() <= region2Index) {
