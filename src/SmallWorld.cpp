@@ -9,24 +9,112 @@
 #include "Player.h"
 #include "MapReader.h"
 #include "Map.h"
+#include "tinydir.h"
 #include <iostream>
 #include <vector>
 #include <ctime>
 #include <string>
+
 using namespace std;
 
 vector<Player> players;
 int numberOfTurns;
 Deck deck = Deck();
 
+
+string dir() {
+	tinydir_dir dir;
+
+	std::vector<string> maps;
+
+	if (tinydir_open(&dir, "./maps") == -1)
+	{
+		perror("Error opening file");
+		goto bail;
+	}
+
+	int item = 0;
+
+
+
+	maps.reserve(10);
+
+	while (dir.has_next)
+	{
+		tinydir_file file;
+		if (tinydir_readfile(&dir, &file) == -1)
+		{
+			perror("Error getting file");
+			goto bail;
+		}
+
+		if (!file.is_dir)
+		{
+			item++;
+			printf("%i", item);
+			printf(") ");
+			printf("%s", file.name);
+			printf("\n");
+			maps.push_back(file.path);
+		}
+
+		if (tinydir_next(&dir) == -1)
+		{
+			perror("Error getting next file");
+			goto bail;
+		}
+	}
+
+
+	cout << endl << "Select a map (Enter its assigned number): ";
+	int selectedMap = 0;
+	while (!(cin >> selectedMap)) {
+		cin.clear();
+		//cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cout << "Please enter a number from 1 to " << item << ".";
+	}
+
+	cout << maps[selectedMap - 1] << endl;
+	return maps[selectedMap - 1];
+
+bail:
+	tinydir_close(&dir);
+	return "";
+
+}
+
+
 void setup() {
+
+	bool mapReady = false;
+
+
+	while (!mapReady) {
+		cout << "Maps:" << endl << endl;
+		string mapPath = dir();
+
+		MapReader mr = MapReader(mapPath);
+
+		Map m = mr.makeMap();
+
+		if (!m.linked())
+			cout << "Map isn't valid" << endl;
+
+		else if (m.empty())
+			cout << "Map is empty" << endl;
+
+		else
+			mapReady = true;
+	}
+
+
 	//Requests the number of players
 	cout << "Select the number of players in the game (2-5 players): ";
 	int numberOfPlayers = 0;
 	//Number must be between 2 and 5 inclusive
 	while (!(cin >> numberOfPlayers) || (numberOfPlayers < 2 || numberOfPlayers > 5)) {
 		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		//cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		cout << "Enter a valid number of players: ";
 	}
 
@@ -82,9 +170,6 @@ void setup() {
 	std::cout << "\n";
 
 	std::cout << "Reading map from file \n";
-	MapReader mr = MapReader("C:/Users/Gecky/source/repos/COMP345/COMP345/Debug/example.map");
-
-	Map m = mr.makeMap();
 
 	m.linked();
 
@@ -103,7 +188,7 @@ void first_turn(Player player) {
 	int selectedRace = 0;
 	while (!(cin >> selectedRace)) {
 		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		//cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		cout << "Please enter a number from 1 to 6: ";
 	}
     
@@ -126,7 +211,7 @@ void following_turns(Player player) {
     int selectedMove;
     while (!(cin >> selectedMove)) {
 		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		//cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		cout << "Please enter a valid number.";
 	}
     
@@ -136,8 +221,10 @@ void following_turns(Player player) {
     }
 }
 
+
 int main()
 {
+
 	setup();
 
 	//Each player plays the first turn of the game
@@ -159,4 +246,6 @@ int main()
 
     return 0;
 }
+
+
 

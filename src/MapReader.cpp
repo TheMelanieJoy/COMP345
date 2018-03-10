@@ -31,7 +31,7 @@ Map MapReader::makeMap() {
 
 	//checking if regions is recorded
 	if (words.at(0).substr(0, 9) != "[Regions=") {
-		std::cout << "no";
+		std::cout << "Illegal map." << endl;
 		return Map(0, 0);
 	}
 
@@ -96,7 +96,7 @@ Map MapReader::makeMap() {
 
 	//checking if links is recorded
 	if (words.at(word).substr(0, 7) != "[Links=") {
-		std::cout << "no";
+		std::cout << "Illegal map." << endl;
 		return Map(0, 0);
 	}
 
@@ -119,7 +119,7 @@ Map MapReader::makeMap() {
 
 		if (!isdigit(c)) {
 			if (c != ',') {
-				std::cout << "no";
+				std::cout << "Illegal map." << endl;
 				return Map(0, 0);
 			}
 			else {

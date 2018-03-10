@@ -54,6 +54,9 @@ void Map::addLink(const size_t region1Index, const size_t region2Index) {
 }
 
 std::vector<size_t> Map::dft(const size_t region) {
+	if(regions.size() <= 0)
+		return std::vector<size_t>();
+
 	//if the index is bigger than the ammount of regions, then it doesnt exist
 	if (regions.size() <= region) {
 		std::cout << "Error: requested region doesn't exist \n";
@@ -78,10 +81,15 @@ bool Map::linked() {
 
 	//if the result is as big as the vector of regions, then all regions must be linked
 	if (dftResult.size() == regions.size()) {
-		std::cout << "All regions are linked \n";
+		//std::cout << "All regions are linked \n";
 		return true;
 	}
 
-	std::cout << "Error: not all regions are linked \n";
+	//std::cout << "Error: not all regions are linked \n";
 	return false;
+}
+
+
+bool Map::empty() {
+	return regions.size() <= 0;
 }

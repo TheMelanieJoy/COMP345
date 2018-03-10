@@ -58,4 +58,6 @@ public:
 
 	// Checks if all regions are linked
 	bool linked();
+
+	bool empty();
 };
