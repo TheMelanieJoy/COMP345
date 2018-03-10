@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 #include "MapReader.h"
 #include <iostream>
@@ -68,19 +69,17 @@ Map MapReader::makeMap() {
 
 	//output
 	s = "";
+	bool named = false;
 
 	//go through the map getting all region names until we reach the links
 	while (c != '[') {
-
 		if (c == '=') {
-			m.addRegion(s);
-			word++;
-			pos = 0;
-			s = "";
+			named = true;
+			pos++;
 			c = words.at(word)[pos];
 		}
 
-		else {
+		else if (!named) {
 			s += c;
 
 			pos++;
@@ -90,6 +89,32 @@ Map MapReader::makeMap() {
 
 			c = words.at(word)[pos];
 		}
+		else {
+			if (c == ',') {
+				c = words.at(word)[pos + 1];
+				m.addRegion(s, c);
+				
+				word++;
+				pos = 0;
+				s = "";
+				c = words.at(word)[pos];
+				
+			}
+			else if (words.at(word).size() <= pos) {
+				m.addRegion(s);
+				word++;
+				pos = 0;
+				s = "";
+				c = words.at(word)[pos];
+			}
+			else {
+				s += c;
+				pos++;
+				c = words.at(word)[pos];
+			}
+
+		}
+
 	}
 
 	//links

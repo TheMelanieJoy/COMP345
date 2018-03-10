@@ -30,8 +30,22 @@ struct region
 	//default constructor
 	region() {};
 
+	//is it a mountain
+	bool mountain;
+
+	//does it have a lost tribe
+	bool lostTribe;
+
 	//contructor
-	region(string n) : name(n) {}
+	region(string n) : name(n), mountain(false), lostTribe(false), tokens(0) {}
+	region(string n, bool m, bool l) : name(n), mountain(m), lostTribe(l) 
+	{
+		if (l)
+			tokens = 1;
+		else
+			tokens = 0;
+
+	}
 };
 
 class Map {
@@ -49,6 +63,10 @@ public:
 
 	//simply adds a new region of the chosen name
 	void addRegion(string);
+
+
+	//simply adds a new region of the chosen name
+	void addRegion(string, char type);
 
 	//adds a new link between 2 regions
 	void addLink(const size_t, const size_t);
