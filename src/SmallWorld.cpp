@@ -1,6 +1,5 @@
 // SmallWorld.cpp : Defines the entry point for the console application.
 //
-
 #include "stdafx.h"
 #include "Dice.h"
 #include "Deck.h"
@@ -14,13 +13,16 @@
 #include <vector>
 #include <ctime>
 #include <string>
+#include <limits>
 
 using namespace std;
+
+#undef max
 
 vector<Player*> players;
 int numberOfTurns;
 Deck* deck = new Deck();
-
+Dice* dice = new Dice();
 
 string dir() {
 	tinydir_dir dir;
@@ -68,10 +70,10 @@ string dir() {
 
 	cout << endl << "Select a map (Enter its assigned number): ";
 	int selectedMap = 0;
-	while (!(cin >> selectedMap)) {
+	while (!(cin >> selectedMap) || (selectedMap < 1 || selectedMap > maps.size())) {
 		cin.clear();
-		//cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		cout << "Please enter a number from 1 to " << item << ".";
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cout << "Please enter a number from 1 to " << item << "." << endl;
 	}
 
 	cout << maps[selectedMap - 1] << endl;
@@ -114,7 +116,7 @@ void setup() {
 	//Number must be between 2 and 5 inclusive
 	while (!(cin >> numberOfPlayers) || (numberOfPlayers < 2 || numberOfPlayers > 5)) {
 		cin.clear();
-		//cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		cout << "Enter a valid number of players: ";
 	}
 
@@ -186,8 +188,9 @@ void first_turn(Player* player) {
 
 	cout << player->getName() << ", select a race (Enter its assigned number): ";
 	int selectedRace = 0;
-	while (!(cin >> selectedRace)) {
+	while (!(cin >> selectedRace) || (selectedRace < 1 || selectedRace > 6)) {
 		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		cout << "Please enter a number from 1 to 6: ";
 	}
     
@@ -210,9 +213,9 @@ void following_turns(Player* player) {
 
 		cout << player->getName() << ", select a race (Enter its assigned number): ";
 		int selectedRace = 0;
-		while (!(cin >> selectedRace)) {
+		while (!(cin >> selectedRace) || (selectedRace < 1 || selectedRace > 6)) {
 			cin.clear();
-			//cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			cout << "Please enter a number from 1 to 6: ";
 		}
 
@@ -229,6 +232,7 @@ void following_turns(Player* player) {
     int selectedMove;
 	while (!(cin >> selectedMove) || (selectedMove < 1 || selectedMove > 2)) {
 		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		cout << "Please enter a valid number: ";
 	}
     
@@ -256,7 +260,6 @@ void following_turns(Player* player) {
 
 int main()
 {
-
 	setup();
 
 	//Each player plays the first turn of the game
@@ -275,8 +278,25 @@ int main()
 	}
 
 	//Game ends
+	string winner = "";
+	int winningScore = 0;
+	for (auto player : players) {
+		cout << player->getName() << " scored a total of " << player->getVictoryCoins() << " victory points." << endl;
+
+		if (player->getVictoryCoins() > winningScore) {
+			winner = player->getName();
+			winningScore = player->getVictoryCoins();
+		}
+		else if (player->getVictoryCoins() == winningScore) {
+			winner += " & " + player->getName();
+		}
+	}
+	cout << winner << " wins with a score of " << winningScore << " victory points!" << endl << endl;
+	dice->printRollPercentage();
+
 	//Destroy all pointer values
 	delete deck;
+	delete dice;
 	for (auto player : players)
 		delete player;
 

@@ -19,11 +19,12 @@ private:
 public:
 	Player(string);
 	string getName();
+	int getVictoryCoins();
 	FantasyRaceBanner* getRace();
 	Badge* getBadge();
     void add_coins(int);
 	void picks_race(FantasyRaceBanner*, Badge*);
-	bool conquers(Map, size_t);
+	bool conquers(Map, size_t, Dice*);
 	void scores(Map);
 	void declines_race(Deck*);
 };

@@ -17,6 +17,10 @@ string Player::getName() {
 	return name;
 }
 
+int Player::getVictoryCoins() {
+	return victoryCoins;
+}
+
 FantasyRaceBanner* Player::getRace() {
 	return race;
 }
@@ -35,7 +39,7 @@ void Player::picks_race(FantasyRaceBanner* race, Badge* badge) {
 	raceTokens = race->getRaceTokens() + badge->getRaceTokens();
 }
 
-bool Player::conquers(Map m, size_t region) {
+bool Player::conquers(Map m, size_t region, Dice* dice) {
 	//Add region to function's parameter?
 	int neededTokens = m.regions.at(region).tokens + 2;		//tokens() refers to the total tokens present on map (e.g. enemies, lost tribes, mountains)
 
@@ -46,7 +50,7 @@ bool Player::conquers(Map m, size_t region) {
 		return true;
 	}
 	else {
-		int totalTokens = raceTokens + roll();
+		int totalTokens = raceTokens + dice->roll();
 		if(totalTokens >= neededTokens) {
 			//Return 1 token to old conquerer
 			m.regions.at(region).owner = getName();		//Yay victory
