@@ -2,6 +2,14 @@
 #define MAP_H
 
 #include "stdafx.h"
+
+#ifndef PLAYER_H
+#define PLAYER_H
+#include "Player.h"
+
+#endif // !PLAYER_H
+
+
 #include <vector>
 
 using namespace std;
@@ -23,28 +31,29 @@ struct region
 	std::string name;
 
 	//owner of the region
-	std::string owner;
+	Player *owner = nullptr;
 	//number of tokens
 	int tokens;
 
 	//default constructor
-	region() {};
+	region() : owner(nullptr) {};
 
 	//is it a mountain
 	bool mountain;
 
-	//does it have a lost tribe
-	bool lostTribe;
+
+	bool decline = false;
 
 	//contructor
-	region(string n) : name(n), mountain(false), lostTribe(false), tokens(0) {}
-	region(string n, bool m, bool l) : name(n), mountain(m), lostTribe(l) 
+	region(string n) : name(n), mountain(false), tokens(0), owner(nullptr) {}
+	region(string n, bool m, bool l) : name(n), mountain(m), owner(nullptr)
 	{
-		if (l)
+		if (l) {
 			tokens = 1;
+			decline = true;
+		}
 		else
 			tokens = 0;
-
 	}
 };
 
@@ -78,4 +87,6 @@ public:
 	bool linked();
 
 	bool empty();
+
+	void decline(Player*);
 };

@@ -1,10 +1,12 @@
 #pragma once
+#ifndef PLAYER_H
 #define PLAYER_H
+#endif
 
-#include "FantasyRaceBanner.h"
-#include "Badge.h"
-#include "Map.h"
-#include "Deck.h"
+#include "stdafx.h"
+class Map;
+
+
 
 class Player {
 private:
@@ -22,9 +24,12 @@ public:
 	int getVictoryCoins();
 	FantasyRaceBanner* getRace();
 	Badge* getBadge();
+	int currentTokens();
     void add_coins(int);
 	void picks_race(FantasyRaceBanner*, Badge*);
-	bool conquers(Map, size_t, Dice*);
-	void scores(Map);
-	void declines_race(Deck*);
+	bool conquers(Map*, size_t, Dice*);
+	int scores(Map*);
+	void declines_race(Map*, Deck*);
+	void addTokens(int);
+	void setTokens(int);
 };

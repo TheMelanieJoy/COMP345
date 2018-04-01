@@ -105,6 +105,8 @@
     <ClCompile Include="src\FantasyRaceBanner.cpp" />
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\MapReader.cpp" />
+    <ClCompile Include="src\Observer.cpp" />
+    <ClCompile Include="src\PhaseObserver.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\SmallWorld.cpp" />
     <ClCompile Include="src\stdafx.cpp" />
@@ -116,6 +118,8 @@
     <ClInclude Include="src\FantasyRaceBanner.h" />
     <ClInclude Include="src\Map.h" />
     <ClInclude Include="src\MapReader.h" />
+    <ClInclude Include="src\Observer.h" />
+    <ClInclude Include="src\PhaseObserver.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\stdafx.h" />
   </ItemGroup>

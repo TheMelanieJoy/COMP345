@@ -1,9 +1,11 @@
+/*
+	Contains the pile of race banners and badges that the user may take from
+*/
 #pragma once
 #define DECK_H
 
 #include "stdafx.h"
 #include "FantasyRaceBanner.h"
-#include "Badge.h"
 #include <vector>
 
 class Deck {

@@ -1,6 +1,7 @@
 #pragma once
 #define BADGE_H
 
+#include "stdafx.h"
 #include <string>
 using namespace std;
 
@@ -14,6 +15,8 @@ public:
 	string getName();
 	int getRaceTokens();
 };
+
+/* Badge Subclasses */
 
 class Alchemist : public Badge {
 private:

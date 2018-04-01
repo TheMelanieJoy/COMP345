@@ -2,7 +2,6 @@
 #define MAP_READER_H
 
 #include "stdafx.h"
-#include "Map.h"
 #include <iostream>
 #include <string>
 #include <vector>

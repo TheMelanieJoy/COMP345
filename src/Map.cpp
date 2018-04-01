@@ -106,3 +106,22 @@ bool Map::linked() {
 bool Map::empty() {
 	return regions.size() <= 0;
 }
+
+void Map::decline(Player* p)
+{
+	for (auto region : regions) {
+		if (region.owner == p) {
+			if (region.decline) {
+				//cout << "Region " << region.name << " already declined, emptying" << endl;
+				region.decline = false;
+				region.tokens = 0;
+				region.owner = nullptr;
+			}
+			else {
+				cout << "Declining region " << region.name << endl;
+				region.decline = true;
+				region.tokens = 1;
+			}
+		}
+	}
+}

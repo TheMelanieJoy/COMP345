@@ -3,6 +3,7 @@
 #include "Badge.h"
 #include "Deck.h"
 #include <algorithm>
+#include <ctime>
 #include <iostream>
 using std::cout;
 
@@ -42,7 +43,8 @@ Deck::Deck() {
     addBadge(new Swamp());
     addBadge(new Underworld());
     addBadge(new Wealthy());
-    
+
+	srand(time(NULL));
     std::random_shuffle(races.begin(), races.end());
 	std::random_shuffle(badges.begin(), badges.end());
 }

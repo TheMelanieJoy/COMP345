@@ -1,6 +1,7 @@
 #pragma once
 #define FANTASYRACEBANNER_H
 
+#include "stdafx.h"
 #include <string>
 using namespace std;
 

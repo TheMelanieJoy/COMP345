@@ -1,16 +1,10 @@
-﻿  Badge.cpp
-  Deck.cpp
-  Dice.cpp
-c:\users\mdami\source\repos\comp345\src\dice.cpp(8): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  FantasyRaceBanner.cpp
-  Map.cpp
-  MapReader.cpp
-c:\users\mdami\source\repos\comp345\src\mapreader.cpp(88): warning C4018: '>=': signed/unsigned mismatch
-c:\users\mdami\source\repos\comp345\src\mapreader.cpp(117): warning C4018: '<': signed/unsigned mismatch
-c:\users\mdami\source\repos\comp345\src\mapreader.cpp(138): warning C4018: '>=': signed/unsigned mismatch
-  Player.cpp
-  SmallWorld.cpp
-c:\users\mdami\source\repos\comp345\src\smallworld.cpp(143): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  stdafx.cpp
-  Generating Code...
-  COMP345.vcxproj -> C:\Users\mdami\source\repos\COMP345\Debug\COMP345.exe
+﻿  SmallWorld.cpp
+src\SmallWorld.cpp(91): warning C4018: '>': signed/unsigned mismatch
+src\SmallWorld.cpp(117): warning C4018: '<': signed/unsigned mismatch
+src\SmallWorld.cpp(202): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+src\SmallWorld.cpp(228): warning C4018: '<': signed/unsigned mismatch
+src\SmallWorld.cpp(282): warning C4018: '<': signed/unsigned mismatch
+src\SmallWorld.cpp(338): warning C4018: '>': signed/unsigned mismatch
+src\SmallWorld.cpp(381): warning C4018: '>': signed/unsigned mismatch
+src\SmallWorld.cpp(407): warning C4018: '<': signed/unsigned mismatch
+  COMP345.vcxproj -> C:\Users\ms280_000\Desktop\a2_40031684_40032420\Debug\COMP345.exe
