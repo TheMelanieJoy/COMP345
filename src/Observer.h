@@ -25,15 +25,39 @@ public:
 };
 
 
+
 class Subject {
 private:
-	std::vector<Observer*> observers;
+	Observer* observer;
 
 public:
 	void addObserver(Observer* const& observer);
 	void notify();
 };
 
+class TurnSubject : public Subject {
+public:
+	int turn;
+
+	void TurnChanged(int t) {
+		turn = t;
+		//notify();
+	}
+};
+
+class BaseObserver : public Observer {
+	TurnSubject* tItem;
+
+public:
+	BaseObserver(TurnSubject *t) {
+		tItem = t;
+		t->addObserver(this);
+	}
+
+	void update() {
+		cout << endl << "It is turn " << tItem->turn;
+	}
+};
 
 class PhaseSubject : public Subject {
 public:
@@ -90,6 +114,24 @@ public:
 	}
 };
 
+class ObserverWrapper : public Observer {
+public:
+	ObserverWrapper(Observer *inner) {
+		wrappee = inner;
+	}
+	~ObserverWrapper() {
+		delete wrappee;
+	}
+	/*virtual*/
+	void update() {
+		wrappee->update();
+	}
+private:
+	Observer * wrappee;
+
+};
+
+
 class DominionSubject : public Subject {
 public:
 	vector<string> players;
@@ -108,26 +150,111 @@ public:
 			percents.push_back(score);
 		}
 
-		notify();
+		//notify();
+	}
+
+};
+
+class HandSubject : public Subject {
+public:
+	vector<string> players;
+	vector<string> cards;
+
+
+	void HandChanged(vector<string> plr, vector<string> hand) {
+		players.clear();
+		cards.clear();
+		for each (string player in plr)
+		{
+			players.push_back(player);
+		}
+		for each (string card in hand)
+		{
+			cards.push_back(card);
+		}
+
+		//notify();
+	}
+
+};
+
+class PointsSubject : public Subject {
+public:
+	vector<string> players;
+	vector<int> points;
+
+
+	void PointsChanged(vector<string> plr, vector<int> vicPoints) {
+		players.clear();
+		points.clear();
+		for each (string player in plr)
+		{
+			players.push_back(player);
+		}
+		for each (int point in vicPoints)
+		{
+			points.push_back(point);
+		}
+
+		//notify();
 	}
 
 };
 
 
-class DominionObserver : public Observer {
+class DominionObserver : public ObserverWrapper {
 	DominionSubject *sItem;
 public:
-	DominionObserver(DominionSubject *i) {
+	DominionObserver(DominionSubject *i, Observer *inner) : ObserverWrapper(inner) {
 		sItem = i;
 		i->addObserver(this);
 	}
 	void update() override {
+		ObserverWrapper::update();
 		cout << endl;
 
 		for (unsigned int i = 0; i < sItem->percents.size() && i < sItem->players.size(); i++) {
-			cout << endl << sItem->players[i] << " owns " << sItem->percents[i] << "% of the map!" << endl;
+			cout << sItem->players[i] << " owns " << sItem->percents[i] << "% of the map!" << endl;
 		}
 
+	}
+};
+
+
+class HandObserver : public ObserverWrapper {
+	HandSubject *sItem;
+public:
+	HandObserver(HandSubject *i, Observer *inner) : ObserverWrapper(inner) {
+		sItem = i;
+		i->addObserver(this);
+	}
+	void update() override {
+		ObserverWrapper::update();
+
 		cout << endl;
+
+		for (unsigned int i = 0; i < sItem->cards.size() && i < sItem->players.size(); i++) {
+			cout << sItem->players[i] << " has the " << sItem->cards[i] << endl;
+		}
+
+	}
+};
+
+class PointsObserver : public ObserverWrapper {
+	PointsSubject *sItem;
+public:
+	PointsObserver(PointsSubject *i, Observer *inner) : ObserverWrapper(inner) {
+		sItem = i;
+		i->addObserver(this);
+	}
+	void update() override {
+		ObserverWrapper::update();
+
+		cout << endl;
+
+		for (unsigned int i = 0; i < sItem->points.size() && i < sItem->players.size(); i++) {
+			cout << sItem->players[i] << " has " << sItem->points[i] << " points. " << endl;
+		}
+
 	}
 };

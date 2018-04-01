@@ -29,14 +29,20 @@ const int fivePlayersTurns = 8;
 // Global variables
 vector<Player*> players;
 int numberOfTurns;
+int currentTurn = 1;
 Deck* deck = new Deck();
 Dice* dice = new Dice();
 Map m = Map(0,0);
 
+bool dom, hand, coins;
+
 PhaseSubject* phaseSubject = new PhaseSubject;
 PhaseObserver* phaseObserver;
+TurnSubject* turnSubject = new TurnSubject;
 DominionSubject* dominionSubject = new DominionSubject;
-DominionObserver* dominionObserver;
+HandSubject* handSubject = new HandSubject;
+PointsSubject* pointsSubject = new PointsSubject;
+Observer* baseObserver;
 
 //function that selects the maps directory and lists all the maps
 string dir() {
@@ -104,14 +110,82 @@ bail:
 }
 
 
-void updateDominion() {
+void changeObserver() {
+	bool done = false;
+
+	while (!done) {
+		cout << endl << "Observer: ";
+		if (dom)
+			cout << "Domination is on, ";
+		else
+			cout << "Domination is off, ";
+		if (hand)
+			cout << "Cards is on, ";
+		else
+			cout << "Cards is off, ";
+		if (coins)
+			cout << "Points is on" << endl;
+		else
+			cout << "Points is off" << endl;
+
+
+		cout << "Would you like to change observers?" << endl << "1. Toggle Dominion view" <<
+			endl << "2. Toggle Cards view" << endl << "3. Toggle Points view" << endl <<
+			"4. Done" << endl;
+
+		int choice = 0;
+		//Number must be between 2 and 5 inclusive
+		while (!(cin >> choice) || (choice < 1 || choice > 4)) {
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << "Enter a valid choice: ";
+		}
+
+		switch (choice) {
+		case 1:
+			dom = !dom;
+			break;
+		case 2:
+			hand = !hand;
+			break;
+		case 3:
+			coins = !coins;
+			break;
+		case 4:
+			done = true;
+			break;
+		}
+	}
+
+	baseObserver = new BaseObserver(turnSubject);
+
+	if (dom)
+		baseObserver = new DominionObserver(dominionSubject, baseObserver);
+	if (hand)
+		baseObserver = new HandObserver(handSubject, baseObserver);
+	if (coins)
+		baseObserver = new PointsObserver(pointsSubject, baseObserver);
+
+
+}
+
+void updateObserver() {
+
 
 	vector<string> playerNames;
 	vector<int> percent;
+	vector<string> hands;
+	vector<int> points;
 	int size = m.regions.size();
 
-	for each(Player *p in players) 
+	for each(Player *p in players) {
 		playerNames.push_back(p->getName());
+
+		if(p->getBadge())
+			hands.push_back(p->getBadge()->getName() + " " + p->getRace()->getName());
+
+		points.push_back(p->getVictoryCoins());
+	}
 	
 
 	for (int i = 0; i < playerNames.size(); i++) {
@@ -129,12 +203,29 @@ void updateDominion() {
 	}
 
 	dominionSubject->MapChanged(playerNames, percent);
+	handSubject->HandChanged(playerNames, hands);
+	pointsSubject->PointsChanged(playerNames, points);
+	turnSubject->TurnChanged(currentTurn);
+
+	if (coins)
+		pointsSubject->notify();
+	else if (hand)
+		handSubject->notify();
+	else if (dom)
+		dominionSubject->notify();
+	else
+		turnSubject->notify();
 }
 
 void setup() {
 
+	dom = hand = coins = false;
 	phaseObserver = new PhaseObserver(phaseSubject);
-	dominionObserver = new DominionObserver(dominionSubject);
+	baseObserver =  new BaseObserver(turnSubject);
+	baseObserver = new BaseObserver(turnSubject);
+	baseObserver = new BaseObserver(turnSubject);
+	baseObserver = new BaseObserver(turnSubject);
+	baseObserver = new BaseObserver(turnSubject);
 	bool mapReady = false;
 
 	//keeps asking for a map until you succeed
@@ -266,7 +357,6 @@ void conquering(Player* player) {
 				m.regions.at(regions.at(selectedRegion - 1)).owner = nullptr;
 
 				phaseSubject->PhaseChanged(player->getName(), 1, "abandons region " + regions.at(selectedRegion - 1));
-				updateDominion();
 
 
 				regions = vector<size_t>(0);
@@ -333,7 +423,6 @@ void conquering(Player* player) {
 			}
 			if (player->conquers(&m, selectedRegion - 1, dice)) {
 				phaseSubject->PhaseChanged(player->getName(), 2, "captures a region.");
-				updateDominion();
 			}
 			else {
 				phaseSubject->PhaseChanged(player->getName(), 2, "fails to capture region.");
@@ -378,7 +467,6 @@ void conquering(Player* player) {
 
 			if (player->conquers(&m, regions.at(selectedRegion - 1), dice)) {
 				phaseSubject->PhaseChanged(player->getName(), 2, "captures a region.");
-				updateDominion();
 			}
 			else {
 				phaseSubject->PhaseChanged(player->getName(), 2, "fails to capture region.");
@@ -440,6 +528,7 @@ void conquering(Player* player) {
 
 void first_turn(Player* player) {
 
+	changeObserver();
 	//Picks a Race and Special Power combo
 	pickingRace(player);
 
@@ -450,9 +539,14 @@ void first_turn(Player* player) {
 	int points = player->scores(&m);
 
 	phaseSubject->PhaseChanged(player->getName(), 4, " won " + points + (string)" coins. Now they have " + std::to_string( player->getVictoryCoins() ) + " coins.\n");
+
+	updateObserver();
 }
 
 void following_turns(Player* player) {
+
+	changeObserver();
+
 	//Player selects new race if they declined in the previous one
 	if (player->getRace() == NULL) {
 		pickingRace(player);
@@ -485,11 +579,14 @@ void following_turns(Player* player) {
 
 	//Player scores victory points
 	player->scores(&m);
+
+	updateObserver();
 }
 
 
 int main()
 {
+
 	//string str = "Sent  armies to ";
 	//subj->PhaseChanged("john", 0, str);
 	
@@ -497,7 +594,6 @@ int main()
 	setup();
 
 	//Each player plays the first turn of the game
-	int currentTurn = 1;
 	cout << "\nIt is now Turn " << currentTurn << endl << endl;
 	for (auto &player : players)
 		first_turn(player);
