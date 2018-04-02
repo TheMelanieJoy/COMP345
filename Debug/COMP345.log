@@ -1,10 +1,28 @@
-﻿  SmallWorld.cpp
-src\SmallWorld.cpp(91): warning C4018: '>': signed/unsigned mismatch
-src\SmallWorld.cpp(117): warning C4018: '<': signed/unsigned mismatch
-src\SmallWorld.cpp(202): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-src\SmallWorld.cpp(228): warning C4018: '<': signed/unsigned mismatch
-src\SmallWorld.cpp(282): warning C4018: '<': signed/unsigned mismatch
-src\SmallWorld.cpp(338): warning C4018: '>': signed/unsigned mismatch
-src\SmallWorld.cpp(381): warning C4018: '>': signed/unsigned mismatch
-src\SmallWorld.cpp(407): warning C4018: '<': signed/unsigned mismatch
+﻿  Badge.cpp
+  Generating Code...
+  Compiling...
+  stdafx.cpp
+  SmallWorld.cpp
+src\SmallWorld.cpp(97): warning C4018: '>': signed/unsigned mismatch
+src\SmallWorld.cpp(191): warning C4018: '<': signed/unsigned mismatch
+src\SmallWorld.cpp(283): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+src\SmallWorld.cpp(309): warning C4018: '<': signed/unsigned mismatch
+src\SmallWorld.cpp(363): warning C4018: '<': signed/unsigned mismatch
+src\SmallWorld.cpp(419): warning C4018: '>': signed/unsigned mismatch
+src\SmallWorld.cpp(461): warning C4018: '>': signed/unsigned mismatch
+src\SmallWorld.cpp(486): warning C4018: '<': signed/unsigned mismatch
+  Player.cpp
+  Observer.cpp
+  MapReader.cpp
+src\MapReader.cpp(87): warning C4018: '>=': signed/unsigned mismatch
+src\MapReader.cpp(103): warning C4018: '<=': signed/unsigned mismatch
+src\MapReader.cpp(142): warning C4018: '<': signed/unsigned mismatch
+src\MapReader.cpp(163): warning C4018: '>=': signed/unsigned mismatch
+  Map.cpp
+  FantasyRaceBanner.cpp
+  Dice.cpp
+src\Dice.cpp(15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Deck.cpp
+src\Deck.cpp(47): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Generating Code...
   COMP345.vcxproj -> C:\Users\ms280_000\Desktop\a2_40031684_40032420\Debug\COMP345.exe
