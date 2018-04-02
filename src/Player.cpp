@@ -63,7 +63,6 @@ bool Player::conquers(Map* m, size_t region, Dice* dice) {
 		m->regions.at(region).owner = this;
 		m->regions.at(region).tokens = neededTokens;
 		m->regions.at(region).decline = false;
-		cout << m->regions.at(region).owner << endl;
 		raceTokens -= neededTokens;
 		return true;
 	}

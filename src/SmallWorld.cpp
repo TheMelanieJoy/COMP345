@@ -135,7 +135,7 @@ void changeObserver() {
 			"4. Done" << endl;
 
 		int choice = 0;
-		//Number must be between 2 and 5 inclusive
+		//Number must be between 1 and 4 inclusive
 		while (!(cin >> choice) || (choice < 1 || choice > 4)) {
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -171,8 +171,6 @@ void changeObserver() {
 }
 
 void updateObserver() {
-
-
 	vector<string> playerNames;
 	vector<int> percent;
 	vector<string> hands;
@@ -278,15 +276,41 @@ void setup() {
 		cin >> name;
 		Player player = Player(name);
 		players.push_back(new Player(name));
-		players.at(i)->set_strategy(new Random(players.at(i)));
+
+		cout << players.at(i)->getName() << ", what strategy will you use?" << endl
+			<< "1. Aggressive" << endl
+			<< "2. Defensive" << endl
+			<< "3. Moderate" << endl
+			<< "4. Random" << endl;
+
+		int strategyInput = 0;
+		while (!(cin >> strategyInput) || (strategyInput < 1 || strategyInput > 4)) {
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << "Enter a valid choice: ";
+		}
+		cout << endl;
+
+		switch (strategyInput) {
+		case 1:
+			players.at(i)->set_strategy(new Aggressive(players.at(i)));
+			break;
+		case 2:
+			players.at(i)->set_strategy(new Defensive(players.at(i)));
+			break;
+		case 3:
+			players.at(i)->set_strategy(new Moderate(players.at(i)));
+			break;
+		default:
+			players.at(i)->set_strategy(new Random(players.at(i)));
+			break;
+		}
 	}
 
 	currentTurn = 1;
 }
 
 void pickingRace(Player* player) {
-	deck.displayAvailableRaces();
-
 	//Players select a random race
 	srand(time(NULL));
 	int selectedRace = rand() % 6;
@@ -298,37 +322,23 @@ void pickingRace(Player* player) {
 	phaseSubject->PhaseChanged(player->getName(), 0, "selects " + player->getBadge()->getName() + " " + player->getRace()->getName());
 }
 
-void conquering(Player* player) {
-	vector<size_t> regions = vector<size_t>(0);
-	for (int i = 0; i < m.regions.size(); i++) {
-		//if (m.regions.at(i).decline)
-		//	cout << "Region " << m.regions.at(i).name << " is in decline.\n";
-
-		if (m.regions.at(i).owner && m.regions.at(i).owner == player && !m.regions.at(i).decline) {
-			regions.push_back(i);
-			if (m.regions.at(i).tokens > 1) {
-				player->addTokens(m.regions.at(i).tokens - 1);
-				m.regions.at(i).tokens = 1;
-			}
-		}
-	}
-
+void conquering(Player* player, vector<size_t>* regions) {
 	//Abandons
 	if (currentTurn > 1) {
-		if (regions.size() > 0) {
+		if (regions->size() > 0) {
 			int selectedRegion = 0;
 
-			while (selectedRegion >= 0) {
-				selectedRegion = player->abandons(&m, &regions);
+			while (regions->size() > 0 && selectedRegion >= 0) {
+				selectedRegion = player->abandons(&m, regions);
 
 				if (selectedRegion < 0)
 					break;
-				phaseSubject->PhaseChanged(player->getName(), 1, "abandons region " + regions.at(selectedRegion));
+				phaseSubject->PhaseChanged(player->getName(), 1, "abandons region " + regions->at(selectedRegion));
 
-				regions = vector<size_t>(0);
+				regions->clear();
 				for (int i = 0; i < m.regions.size(); i++) {
 					if (m.regions.at(i).owner && m.regions.at(i).owner == player && !m.regions.at(i).decline) {
-						regions.push_back(i);
+						regions->push_back(i);
 						if (m.regions.at(i).tokens > 1) {
 							player->addTokens(m.regions.at(i).tokens - 1);
 							m.regions.at(i).tokens = 1;
@@ -351,29 +361,29 @@ void conquering(Player* player) {
 			std::cout << "Cannot expand further: You have conquered all regions";
 			break;
 		}
-
-			regions = vector<size_t>(0);
+		if (owned > 0) {
+			regions->clear();
 			for (const auto link : m.links) {
 				//we're only looking for the links that start with our region
 				if (m.regions.at(link.region1).owner && m.regions.at(link.region1).owner == player) {
-					if (!(std::find(regions.begin(), regions.end(), link.region2) != regions.end())) {
+					if (!(std::find(regions->begin(), regions->end(), link.region2) != regions->end())) {
 						if (!m.regions.at(link.region2).owner || m.regions.at(link.region2).owner != player) {
-							regions.push_back(link.region2);
+							regions->push_back(link.region2);
 						}
 					}
 				}
 			}
 		}
 		else {
-			regions = vector<size_t>(0);
+			regions->clear();
 			for (int i = 0; i < m.regions.size(); i++) {
-				regions.push_back(i);
+				regions->push_back(i);
 			}
 		}
 
-		regions.shrink_to_fit();
+		regions->shrink_to_fit();
 
-		int selectedRegion = player->expands(&m, &regions);
+		int selectedRegion = player->expands(&m, regions);
 
 		if (selectedRegion < 0)
 			break;
@@ -389,10 +399,10 @@ void conquering(Player* player) {
 	}
 
 	//Redeploy
-	regions = vector<size_t>(0);
+	regions->clear();
 	for (int i = 0; i < m.regions.size(); i++) {
 		if (m.regions.at(i).owner && m.regions.at(i).owner == player && !m.regions.at(i).decline) {
-			regions.push_back(i);
+			regions->push_back(i);
 			if (m.regions.at(i).tokens > 1) {
 				player->addTokens(m.regions.at(i).tokens - 1);
 				m.regions.at(i).tokens = 1;
@@ -400,13 +410,13 @@ void conquering(Player* player) {
 		}
 	}
 
-	if (regions.size() == 0)
+	if (regions->size() == 0)
 		cout << "Cannot redeploy: You don't own any regions" << endl;
 	else
 		while (player->currentTokens() > 0) {
 			int selectedRegion, numberOfTokens;
-			std::tie(selectedRegion, numberOfTokens) = player->redeploys(&m, &regions);
-			phaseSubject->PhaseChanged(player->getName(), 3, "adds " + std::to_string(numberOfTokens) + " tokens to " + m.regions.at(regions.at(selectedRegion)).name);
+			std::tie(selectedRegion, numberOfTokens) = player->redeploys(&m, regions);
+			phaseSubject->PhaseChanged(player->getName(), 3, "adds " + std::to_string(numberOfTokens) + " tokens to " + m.regions.at(regions->at(selectedRegion)).name);
 		}
 }
 
@@ -417,7 +427,23 @@ void plays_turn(Player* player) {
 	if (player->getRace() == NULL)
 		pickingRace(player);
 
-	int selectedMove = player->select_action(currentTurn);
+	vector<size_t> regions = vector<size_t>(0);
+	for (int i = 0; i < m.regions.size(); i++) {
+		if (m.regions.at(i).owner && m.regions.at(i).owner == player && !m.regions.at(i).decline) {
+			regions.push_back(i);
+			if (m.regions.at(i).tokens > 1) {
+				player->addTokens(m.regions.at(i).tokens - 1);
+				m.regions.at(i).tokens = 1;
+			}
+		}
+	}
+
+	int selectedMove = 2;
+
+	//Player will not decline on first or last turn
+	if (currentTurn > 1 && currentTurn < numberOfTurns) {
+		selectedMove = player->select_action(currentTurn);
+	}
 
 	//Entering in decline
 	if (selectedMove == 1) {
@@ -427,10 +453,8 @@ void plays_turn(Player* player) {
 
 	}
 	//Expanding through new conquests
-	else if (selectedMove == 2) {
-		conquering(player);
-
-	}
+	else if (selectedMove == 2)
+		conquering(player, &regions);
 
 	//Player scores victory points
 	player->scores(&m);
@@ -450,7 +474,7 @@ int main()
 
 	//Game loop
 	while (currentTurn <= numberOfTurns) {
-		cout << "It is now Turn " << currentTurn << endl << endl;
+		cout << "\nIt is now Turn " << currentTurn << endl << endl;
 		for (auto &player : players)
 			plays_turn(player);
 		currentTurn++;
@@ -477,12 +501,8 @@ int main()
 	delete phaseSubject;
 	delete phaseObserver;
 	delete dominionSubject;
-	delete dominionObserver;
 	for (auto player : players)
 		delete player;
 
     return 0;
 }
-
-
-
