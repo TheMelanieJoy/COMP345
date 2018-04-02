@@ -9,6 +9,7 @@
 #include "MapReader.h"
 #include "Map.h"
 #include "tinydir.h"
+#include "Strategy.h"
 #include <iostream>
 #include <vector>
 #include <ctime>
@@ -29,10 +30,10 @@ const int fivePlayersTurns = 8;
 // Global variables
 vector<Player*> players;
 int numberOfTurns;
-int currentTurn = 1;
-Deck* deck = new Deck();
-Dice* dice = new Dice();
+Deck deck;
+Dice dice;
 Map m = Map(0,0);
+int currentTurn;
 
 bool dom, hand, coins;
 
@@ -277,37 +278,29 @@ void setup() {
 		cin >> name;
 		Player player = Player(name);
 		players.push_back(new Player(name));
+		players.at(i)->set_strategy(new Random(players.at(i)));
 	}
 
-	//Shuffles race banners and badges' index
-	srand(time(NULL));
+	currentTurn = 1;
 }
 
 void pickingRace(Player* player) {
-	deck->displayAvailableRaces();
+	deck.displayAvailableRaces();
 
+	//Players select a random race
+	srand(time(NULL));
+	int selectedRace = rand() % 6;
 
-	cout << player->getName() << ", select a race (Enter its assigned number): ";
-	int selectedRace = 0;
-	while (!(cin >> selectedRace) || (selectedRace < 1 || selectedRace > 6)) {
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		cout << "Please enter a number from 1 to 6: ";
-	}
-
-	player->picks_race(deck->getRace(selectedRace - 1), deck->getBadge(selectedRace - 1));
-	deck->removeRace(selectedRace - 1);
-	deck->removeBadge(selectedRace - 1);
-
+	player->picks_race(deck.getRace(selectedRace), deck.getBadge(selectedRace));
+	deck.removeRace(selectedRace);
+	deck.removeBadge(selectedRace);
 
 	phaseSubject->PhaseChanged(player->getName(), 0, "selects " + player->getBadge()->getName() + " " + player->getRace()->getName());
 }
 
 void conquering(Player* player) {
-
 	vector<size_t> regions = vector<size_t>(0);
 	for (int i = 0; i < m.regions.size(); i++) {
-
 		//if (m.regions.at(i).decline)
 		//	cout << "Region " << m.regions.at(i).name << " is in decline.\n";
 
@@ -320,44 +313,17 @@ void conquering(Player* player) {
 		}
 	}
 
-	if (regions.size() > 0) {
-		bool abandon = true;
-		
-		cout << "Would you like to abandon a region?\n1)Yes\n2)No\n";
+	//Abandons
+	if (currentTurn > 1) {
+		if (regions.size() > 0) {
+			int selectedRegion = 0;
 
-		while (abandon) {
-			int answer;
-			
-			while (!(cin >> answer) || (answer < 1 || answer > 2)) {
-				cin.clear();
-				cin.ignore(numeric_limits<streamsize>::max(), '\n');
-				cout << "Please enter a valid answer: ";
-			}
+			while (selectedRegion >= 0) {
+				selectedRegion = player->abandons(&m, &regions);
 
-			if (answer == 2)
-				abandon = false;
-			else {
-				cout << "Regions owned: \n";
-				int regionCount = 1;
-				for (auto region : regions) {
-					cout << regionCount << ") " << m.regions.at(region).name << endl;
-					regionCount++;
-				}
-
-				cout << "Which one?";
-
-				int selectedRegion;
-				while (!(cin >> selectedRegion) || (selectedRegion < 1 || selectedRegion > regionCount - 1)) {
-					cin.clear();
-					cin.ignore(numeric_limits<streamsize>::max(), '\n');
-					cout << "Please enter a valid number: ";
-				}
-
-				m.regions.at(regions.at(selectedRegion - 1)).tokens = 0;
-				m.regions.at(regions.at(selectedRegion - 1)).owner = nullptr;
-
-				phaseSubject->PhaseChanged(player->getName(), 1, "abandons region " + regions.at(selectedRegion - 1));
-
+				if (selectedRegion < 0)
+					break;
+				phaseSubject->PhaseChanged(player->getName(), 1, "abandons region " + regions.at(selectedRegion));
 
 				regions = vector<size_t>(0);
 				for (int i = 0; i < m.regions.size(); i++) {
@@ -369,73 +335,26 @@ void conquering(Player* player) {
 						}
 					}
 				}
-				if (regions.size() > 1) {
-					cout << "Would you like to abandon another region?\n1)Yes\n2)No\n";
-				}
-				else
-					abandon = false;
 			}
 		}
 	}
 
+	//Conquers
 	while (player->currentTokens() > 0) {
-		cout << "Remaining tokens: " << player->currentTokens() << endl;
-
-		cout << "Select region to conquer: \n";
-
 		int owned = 0;
-		size_t currentRegion = 0;
 
-
-		for (const auto region : m.regions) {
-			if (region.owner && region.owner == player) {
+		for (const auto region : m.regions)
+			if (region.owner && region.owner == player)
 				owned++;
-			}
-		}
-
 
 		if (owned == m.regions.size()) {
-			cout << "Wow, you own all the regions!\n";
+			std::cout << "Cannot expand further: You have conquered all regions";
 			break;
 		}
 
-
-		currentRegion = 1;
-		if (owned == 0) {
-			for (const auto region : m.regions) {
-				cout << currentRegion << ") " << region.name;
-				if (region.owner) 
-					cout << " owned by: " << region.owner->getName() << " current tokens: " << region.tokens;
-				
-				else if (region.decline && region.tokens > 0)
-					cout << " owned by: " << "Lost tribe" << " current tokens: " << region.tokens;
-
-				cout << endl;
-
-				currentRegion++;
-			}
-
-			int selectedRegion;
-			while (!(cin >> selectedRegion) || (selectedRegion < 1 || selectedRegion > currentRegion - 1)) {
-				cin.clear();
-				cin.ignore(numeric_limits<streamsize>::max(), '\n');
-				cout << "Please enter a valid number: ";
-			}
-			if (player->conquers(&m, selectedRegion - 1, dice)) {
-				phaseSubject->PhaseChanged(player->getName(), 2, "captures a region.");
-			}
-			else {
-				phaseSubject->PhaseChanged(player->getName(), 2, "fails to capture region.");
-				break;
-			}
-		}
-		else {
 			regions = vector<size_t>(0);
 			for (const auto link : m.links) {
 				//we're only looking for the links that start with our region
-				
-
-
 				if (m.regions.at(link.region1).owner && m.regions.at(link.region1).owner == player) {
 					if (!(std::find(regions.begin(), regions.end(), link.region2) != regions.end())) {
 						if (!m.regions.at(link.region2).owner || m.regions.at(link.region2).owner != player) {
@@ -444,44 +363,32 @@ void conquering(Player* player) {
 					}
 				}
 			}
-			regions.shrink_to_fit();
-			currentRegion = 1;
-			for (const auto region : regions) {
-				cout << currentRegion << ") " << m.regions.at(region).name;
-				if (m.regions.at(region).owner)
-					cout << " owned by: " << m.regions.at(region).owner->getName() << " current tokens: " << m.regions.at(region).tokens;
-				else if (m.regions.at(region).decline && m.regions.at(region).tokens > 0)
-					cout << " owned by: " << "Lost tribe" << " current tokens: " << m.regions.at(region).tokens;
-				cout  << endl;
-
-				currentRegion++;
+		}
+		else {
+			regions = vector<size_t>(0);
+			for (int i = 0; i < m.regions.size(); i++) {
+				regions.push_back(i);
 			}
+		}
 
-			int selectedRegion;
-			while (!(cin >> selectedRegion) || (selectedRegion < 1 || selectedRegion > currentRegion - 1)) {
-				cin.clear();
-				cin.ignore(numeric_limits<streamsize>::max(), '\n');
-				cout << "Please enter a valid number: ";
-			}
-			int capturedRegion = regions.at(selectedRegion - 1);
+		regions.shrink_to_fit();
 
-			if (player->conquers(&m, regions.at(selectedRegion - 1), dice)) {
+		int selectedRegion = player->expands(&m, &regions);
+
+		if (selectedRegion < 0)
+			break;
+		else {
+			if (player->conquers(&m, selectedRegion, &dice)) {
 				phaseSubject->PhaseChanged(player->getName(), 2, "captures a region.");
 			}
 			else {
 				phaseSubject->PhaseChanged(player->getName(), 2, "fails to capture region.");
 				break;
 			}
-
 		}
-
-
-
 	}
 
-	cout << "Done conquering. \n";
-	cout << "Time to redeploy. \n";
-
+	//Redeploy
 	regions = vector<size_t>(0);
 	for (int i = 0; i < m.regions.size(); i++) {
 		if (m.regions.at(i).owner && m.regions.at(i).owner == player && !m.regions.at(i).decline) {
@@ -493,88 +400,36 @@ void conquering(Player* player) {
 		}
 	}
 
-	while (player->currentTokens() > 0) {
-		if (regions.size() == 0) {
-			cout << "You don't own any regions, can't redeploy.\n";
-			break;
+	if (regions.size() == 0)
+		cout << "Cannot redeploy: You don't own any regions" << endl;
+	else
+		while (player->currentTokens() > 0) {
+			int selectedRegion, numberOfTokens;
+			std::tie(selectedRegion, numberOfTokens) = player->redeploys(&m, &regions);
+			phaseSubject->PhaseChanged(player->getName(), 3, "adds " + std::to_string(numberOfTokens) + " tokens to " + m.regions.at(regions.at(selectedRegion)).name);
 		}
-
-		cout << "Current tokens : " << player->currentTokens() << endl;
-		cout << "Regions owned: \n";
-		int regionCount = 1;
-		for (auto region : regions) {
-			cout << regionCount << ") " << m.regions.at(region).name << ", " << m.regions.at(region).tokens << " tokens.\n";
-			regionCount++;
-		}
-		cout << "Which region would you like to add to? ";
-		int selectedRegion;
-		while (!(cin >> selectedRegion) || (selectedRegion < 1 || selectedRegion > regionCount - 1)) {
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			cout << "Please enter a valid number: ";
-		}
-		cout << "How many tokens do you want to add? ";
-		int numberOfTokens;
-		while (!(cin >> numberOfTokens) || (numberOfTokens < 0 || numberOfTokens > player->currentTokens())) {
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			cout << "Please enter a valid number: ";
-		}
-		phaseSubject->PhaseChanged(player->getName(), 3, "adds " + std::to_string(numberOfTokens) + " tokens to " + m.regions.at(regions.at(selectedRegion - 1)).name);
-		player->setTokens(player->currentTokens() - numberOfTokens);
-		m.regions.at(regions.at(selectedRegion - 1)).tokens += numberOfTokens;
-	}
 }
 
-void first_turn(Player* player) {
-
-	changeObserver();
-	//Picks a Race and Special Power combo
-	pickingRace(player);
-
-	//Conquers some Regions
-	conquering(player);
-
-	//Scores some Victory coins
-	int points = player->scores(&m);
-
-	phaseSubject->PhaseChanged(player->getName(), 4, " won " + points + (string)" coins. Now they have " + std::to_string( player->getVictoryCoins() ) + " coins.\n");
-
-	updateObserver();
-}
-
-void following_turns(Player* player) {
-
+void plays_turn(Player* player) {
 	changeObserver();
 
 	//Player selects new race if they declined in the previous one
-	if (player->getRace() == NULL) {
+	if (player->getRace() == NULL)
 		pickingRace(player);
-	}
 
-    cout << player->getName() << ", it is now your turn. What will you do?" << endl
-        << "1. Decline my race." << endl
-        << "2. Conquer." << endl;
-    int selectedMove;
-	while (!(cin >> selectedMove) || (selectedMove < 1 || selectedMove > 2)) {
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		cout << "Please enter a valid number: ";
-	}
-    
-    //Entering in decline
-    if(selectedMove == 1) {
+	int selectedMove = player->select_action(currentTurn);
+
+	//Entering in decline
+	if (selectedMove == 1) {
 		//Player puts race in decline
 		phaseSubject->PhaseChanged(player->getName(), 5, "declines the " + player->getBadge()->getName() + " " + player->getRace()->getName());
-		//cout << "The " << player->getBadge()->getName() << " " << player->getRace()->getName() << " is now declined." << endl << endl;
-		player->declines_race(&m, deck);
+		player->declines_race(&m, &deck);
 
-    }
+	}
 	//Expanding through new conquests
-	else if(selectedMove == 2) {
-		
+	else if (selectedMove == 2) {
 		conquering(player);
-		
+
 	}
 
 	//Player scores victory points
@@ -593,17 +448,11 @@ int main()
 	// Init
 	setup();
 
-	//Each player plays the first turn of the game
-	cout << "\nIt is now Turn " << currentTurn << endl << endl;
-	for (auto &player : players)
-		first_turn(player);
-	currentTurn++;
-	
-	//Each player plays the following turns until the game is over
+	//Game loop
 	while (currentTurn <= numberOfTurns) {
 		cout << "It is now Turn " << currentTurn << endl << endl;
 		for (auto &player : players)
-			following_turns(player);
+			plays_turn(player);
 		currentTurn++;
 	}
 
@@ -622,11 +471,13 @@ int main()
 		}
 	}
 	cout << winner << " wins with a score of " << winningScore << " victory points!" << endl << endl;
-	dice->printRollPercentage();
+	dice.printRollPercentage();
 
 	//Destroy all pointer values
-	delete deck;
-	delete dice;
+	delete phaseSubject;
+	delete phaseObserver;
+	delete dominionSubject;
+	delete dominionObserver;
 	for (auto player : players)
 		delete player;
 

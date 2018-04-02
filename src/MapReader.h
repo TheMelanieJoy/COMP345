@@ -1,5 +1,4 @@
 #pragma once
-#define MAP_READER_H
 
 #include "stdafx.h"
 #include <iostream>
