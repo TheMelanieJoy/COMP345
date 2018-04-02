@@ -49,7 +49,6 @@ int Aggressive::expands(Map* map, vector<size_t>* regions) {
 
 /* Aggressive player puts all of their redeployable tokens into one region */
 std::tuple<int, int> Aggressive::redeploys(Map* map, vector<size_t>* regions) {
-	cout << "Current tokens : " << player->currentTokens() << endl;
 	int selectedRegion = 0;
 	int numberOfTokens = player->currentTokens();
 
@@ -97,7 +96,6 @@ int Defensive::expands(Map* map, vector<size_t>* regions) {
 }
 
 std::tuple<int, int> Defensive::redeploys(Map* map, vector<size_t>* regions) {
-	cout << "Current tokens : " << player->currentTokens() << endl;
 	srand(time(NULL));
 	int selectedRegion = rand() % regions->size();
 	srand(time(NULL));
@@ -161,7 +159,6 @@ int Moderate::expands(Map* map, vector<size_t>* regions) {
 
 /* Moderate player redeploys tokens as evenly as possible amongst conquered regions */
 std::tuple<int, int> Moderate::redeploys(Map* map, vector<size_t>* regions) {
-	cout << "Current tokens : " << player->currentTokens() << endl;
 	srand(time(NULL));
 	int selectedRegion = rand() % regions->size();
 	srand(time(NULL));

@@ -55,7 +55,6 @@ bool Player::conquers(Map* m, size_t region, Dice* dice) {
 		neededTokens++;
 
 	if(raceTokens >= neededTokens) {
-		cout << "More than enough tokens \n";
 		//Return 1 token to old conquerer
 		if (m->regions.at(region).owner)
 			m->regions.at(region).owner->addTokens(m->regions.at(region).tokens - 1);
@@ -67,8 +66,6 @@ bool Player::conquers(Map* m, size_t region, Dice* dice) {
 		return true;
 	}
 	else {
-		cout << "Not enough tokens \n";
-
 		if (m->regions.at(region).tokens == 0) {
 			cout << "Can't use reinforcement dice on an empty region. \n";
 			return false;
@@ -119,7 +116,9 @@ void Player::declines_race(Map* m, Deck* deck) {
 		deck->addBadge(declinedBadge);
 	}
 	declinedRace = race;
+	declinedBadge = badge;
 	race = NULL;
+	badge = NULL;
 	m->decline(this);
 }
 

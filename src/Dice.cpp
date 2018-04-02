@@ -33,7 +33,7 @@ int Dice::roll() {
 			zeroCounter++;
 	}
 
-    cout << "You rolled a " << dieValue << "." << endl;
+    //cout << "You rolled a " << dieValue << "." << endl;
 
 	return dieValue;
 }

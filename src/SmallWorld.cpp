@@ -23,7 +23,7 @@ using std::cin;
 #undef max
 
 // Constants
-const int twoThreePlayersTurns = 3;
+const int twoThreePlayersTurns = 10;
 const int fourPlayersTurns = 9;
 const int fivePlayersTurns = 8;
 
@@ -130,7 +130,7 @@ void changeObserver() {
 			cout << "Points is off" << endl;
 
 
-		cout << "Would you like to change observers?" << endl << "1. Toggle Dominion view" <<
+		cout << "Would you like to change observers?" << endl << "1. Toggle Domination view" <<
 			endl << "2. Toggle Cards view" << endl << "3. Toggle Points view" << endl <<
 			"4. Done" << endl;
 
@@ -474,7 +474,6 @@ int main()
 
 	//Game loop
 	while (currentTurn <= numberOfTurns) {
-		cout << "\nIt is now Turn " << currentTurn << endl << endl;
 		for (auto &player : players)
 			plays_turn(player);
 		currentTurn++;
