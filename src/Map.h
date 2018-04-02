@@ -2,15 +2,10 @@
 #define MAP_H
 
 #include "stdafx.h"
-
-#ifndef PLAYER_H
-#define PLAYER_H
 #include "Player.h"
-
-#endif // !PLAYER_H
-
-
 #include <vector>
+
+class Player;
 
 using namespace std;
 

@@ -40,9 +40,16 @@ void Player::picks_race(FantasyRaceBanner* race, Badge* badge) {
 	raceTokens = race->getRaceTokens() + badge->getRaceTokens();
 }
 
+int Player::abandons(Map* map, vector<size_t>* regions) {
+	return strategy->abandons(map, regions);
+}
+
+int Player::expands(Map* map, vector<size_t>* regions) {
+	return strategy->expands(map, regions);
+}
+
 bool Player::conquers(Map* m, size_t region, Dice* dice) {
-	//Add region to function's parameter?
-	int neededTokens = m->regions.at(region).tokens + 2;		//tokens() refers to the total tokens present on map (e.g. enemies, lost tribes, mountains)
+	int neededTokens = m->regions.at(region).tokens + 2;
 
 	if (m->regions.at(region).mountain)
 		neededTokens++;
@@ -53,7 +60,7 @@ bool Player::conquers(Map* m, size_t region, Dice* dice) {
 		if (m->regions.at(region).owner)
 			m->regions.at(region).owner->addTokens(m->regions.at(region).tokens - 1);
 
-		m->regions.at(region).owner = this;		//Yay victory
+		m->regions.at(region).owner = this;
 		m->regions.at(region).tokens = neededTokens;
 		m->regions.at(region).decline = false;
 		cout << m->regions.at(region).owner << endl;
@@ -77,7 +84,7 @@ bool Player::conquers(Map* m, size_t region, Dice* dice) {
 			if (m->regions.at(region).owner)
 				m->regions.at(region).owner->addTokens(m->regions.at(region).tokens - 1);
 
-			m->regions.at(region).owner = this;		//Yay victory
+			m->regions.at(region).owner = this;
 			m->regions.at(region).tokens = raceTokens;
 			m->regions.at(region).decline = false;
 			raceTokens = 0;
@@ -89,16 +96,19 @@ bool Player::conquers(Map* m, size_t region, Dice* dice) {
 	}
 }
 
+std::tuple<int, int> Player::redeploys(Map* map, vector<size_t>* regions) {
+	return strategy->redeploys(map, regions);
+}
+
 int Player::scores(Map * m) {
 	int points = 0;
 
-	for(const auto region : m->regions) {		//Maybe add vector in this function's parameter?
+	for(const auto region : m->regions) {
 		if(region.owner == this)
 			points += 1;
 	}
 
 	victoryCoins += points;
-	//cout << "Won " << points << " coins. Now you have " << victoryCoins << " coins.\n";
 
 	return points;
 }
@@ -128,4 +138,12 @@ void Player::setTokens(int tokens)
 int Player::currentTokens()
 {
 	return raceTokens;
+}
+
+void Player::set_strategy(Strategy *strategy) {
+	this->strategy = strategy;
+}
+
+int Player::select_action(int currentTurn) {
+	return strategy->select_action(currentTurn);
 }
