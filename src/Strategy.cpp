@@ -95,12 +95,23 @@ int Defensive::expands(Map* map, vector<size_t>* regions) {
 	}
 }
 
+/* Defensive player distributes tokens among its regions as evenly as possible */
 std::tuple<int, int> Defensive::redeploys(Map* map, vector<size_t>* regions) {
-	srand(time(NULL));
-	int selectedRegion = rand() % regions->size();
-	srand(time(NULL));
-	int numberOfTokens = (rand() % player->currentTokens()) + 1;
-	if (numberOfTokens == 0) numberOfTokens = 1;
+	int numberOfTokens = 1;
+	bool redeployDone = false;
+	int selectedRegion = 0;
+	int i = 2;
+
+	while (!redeployDone) {
+		if (map->regions.at(regions->at(selectedRegion)).tokens < i)
+			redeployDone = true;
+		else if (selectedRegion == regions->size() - 1) {
+			i++;
+			selectedRegion = 0;
+		}
+		else
+			selectedRegion++;
+	}
 
 	player->setTokens(player->currentTokens() - numberOfTokens);
 	map->regions.at(regions->at(selectedRegion)).tokens += numberOfTokens;
@@ -157,15 +168,23 @@ int Moderate::expands(Map* map, vector<size_t>* regions) {
 	}
 }
 
-/* Moderate player redeploys tokens as evenly as possible amongst conquered regions */
+/* Moderate player redeploys half of their remaining tokens to a region continuously until they no longer have any */
 std::tuple<int, int> Moderate::redeploys(Map* map, vector<size_t>* regions) {
-	srand(time(NULL));
-	int selectedRegion = rand() % regions->size();
-	srand(time(NULL));
-	int numberOfTokens = (rand() % player->currentTokens()) + 1;
-	if (numberOfTokens == 0) numberOfTokens = 1;
+	int numberOfTokens = ceil((float)player->currentTokens() / 2);
+	bool redeployDone = false;
+	int selectedRegion = 0;
+	int i = 2;
 
-
+	while (!redeployDone) {
+		if (map->regions.at(regions->at(selectedRegion)).tokens < i)
+			redeployDone = true;
+		else if (selectedRegion == regions->size() - 1) {
+			i++;
+			selectedRegion = 0;
+		}
+		else
+			selectedRegion++;
+	}
 	player->setTokens(player->currentTokens() - numberOfTokens);
 	map->regions.at(regions->at(selectedRegion)).tokens += numberOfTokens;
 	return std::make_tuple(selectedRegion, numberOfTokens);

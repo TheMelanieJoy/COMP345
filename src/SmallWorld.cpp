@@ -115,7 +115,9 @@ void changeObserver() {
 	bool done = false;
 
 	while (!done) {
-		cout << endl << "Observer: ";
+		system("CLS");
+
+		cout << "Observer: ";
 		if (dom)
 			cout << "Domination is on, ";
 		else
@@ -212,8 +214,12 @@ void updateObserver() {
 		handSubject->notify();
 	else if (dom)
 		dominionSubject->notify();
-	else
+	else {
 		turnSubject->notify();
+	}
+
+	cout << endl << flush;
+	system("PAUSE");
 }
 
 void setup() {
@@ -387,14 +393,12 @@ void conquering(Player* player, vector<size_t>* regions) {
 
 		if (selectedRegion < 0)
 			break;
+		else if (player->conquers(&m, selectedRegion, &dice)) { 
+			phaseSubject->PhaseChanged(player->getName(), 2, "captures a region.");
+		}
 		else {
-			if (player->conquers(&m, selectedRegion, &dice)) {
-				phaseSubject->PhaseChanged(player->getName(), 2, "captures a region.");
-			}
-			else {
-				phaseSubject->PhaseChanged(player->getName(), 2, "fails to capture region.");
-				break;
-			}
+			phaseSubject->PhaseChanged(player->getName(), 2, "fails to capture region.");
+			break;
 		}
 	}
 
@@ -482,6 +486,7 @@ int main()
 	//Game ends
 	string winner = "";
 	int winningScore = 0;
+	system("CLS");
 	for (auto player : players) {
 		cout << player->getName() << " scored a total of " << player->getVictoryCoins() << " victory points." << endl;
 
@@ -493,7 +498,7 @@ int main()
 			winner += " & " + player->getName();
 		}
 	}
-	cout << winner << " wins with a score of " << winningScore << " victory points!" << endl << endl;
+	cout << "\n" << winner << " wins with a score of " << winningScore << " victory points!" << endl << endl;
 	dice.printRollPercentage();
 
 	//Destroy all pointer values

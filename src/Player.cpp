@@ -67,7 +67,6 @@ bool Player::conquers(Map* m, size_t region, Dice* dice) {
 	}
 	else {
 		if (m->regions.at(region).tokens == 0) {
-			cout << "Can't use reinforcement dice on an empty region. \n";
 			return false;
 		}
 

@@ -55,7 +55,7 @@ public:
 	}
 
 	void update() {
-		cout << endl << "It is turn " << tItem->turn + 1;
+		cout << endl << "It is turn " << tItem->turn << endl;
 	}
 };
 
