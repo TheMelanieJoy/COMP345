@@ -339,7 +339,7 @@ void conquering(Player* player, vector<size_t>* regions) {
 
 				if (selectedRegion < 0)
 					break;
-				phaseSubject->PhaseChanged(player->getName(), 1, "abandons region " + regions->at(selectedRegion));
+				phaseSubject->PhaseChanged(player->getName(), 1, "abandons " + m.regions.at((regions->at(selectedRegion))).name + ".");
 
 				regions->clear();
 				for (int i = 0; i < m.regions.size(); i++) {
@@ -364,7 +364,7 @@ void conquering(Player* player, vector<size_t>* regions) {
 				owned++;
 
 		if (owned == m.regions.size()) {
-			std::cout << "Cannot expand further: You have conquered all regions";
+			phaseSubject->PhaseChanged(player->getName(), 2, "cannot expand further: You have conquered all regions.");
 			break;
 		}
 		if (owned > 0) {
@@ -415,7 +415,7 @@ void conquering(Player* player, vector<size_t>* regions) {
 	}
 
 	if (regions->size() == 0)
-		cout << "Cannot redeploy: You don't own any regions" << endl;
+		phaseSubject->PhaseChanged(player->getName(), 3, "cannot redeploy: You don't own any regions.");
 	else
 		while (player->currentTokens() > 0) {
 			int selectedRegion, numberOfTokens;
@@ -426,10 +426,12 @@ void conquering(Player* player, vector<size_t>* regions) {
 
 void plays_turn(Player* player) {
 	changeObserver();
-
+	bool newRace = false;
 	//Player selects new race if they declined in the previous one
-	if (player->getRace() == NULL)
+	if (player->getRace() == NULL) {
 		pickingRace(player);
+		newRace = true;
+	}
 
 	vector<size_t> regions = vector<size_t>(0);
 	for (int i = 0; i < m.regions.size(); i++) {
@@ -444,8 +446,8 @@ void plays_turn(Player* player) {
 
 	int selectedMove = 2;
 
-	//Player will not decline on first or last turn
-	if (currentTurn > 1 && currentTurn < numberOfTurns) {
+	//Player will not decline when they have a new race or last turn
+	if (!newRace && currentTurn != numberOfTurns) {
 		selectedMove = player->select_action(currentTurn);
 	}
 
@@ -461,7 +463,7 @@ void plays_turn(Player* player) {
 		conquering(player, &regions);
 
 	//Player scores victory points
-	player->scores(&m);
+	phaseSubject->PhaseChanged(player->getName(), 4, "scores " + std::to_string(player->scores(&m)) + " victory coins.");
 
 	updateObserver();
 }
