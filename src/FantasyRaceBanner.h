@@ -16,6 +16,11 @@ public:
 	int getRaceTokens();
 };
 
+//Subclasses for each race banner in the game
+
+/**
+* Skill: Four of your Amazon tokens may only be used for conquest
+*/
 class Amazons : public FantasyRaceBanner {
 private:
 
@@ -30,6 +35,9 @@ public:
 	Dwarves();
 };
 
+/**
+* Skill: When the enemy conquers one of your Regions, keep all your Elf tokens in hand for redeployment at the end of the current player's turn
+*/
 class Elves : public FantasyRaceBanner {
 private:
 
@@ -65,6 +73,9 @@ public:
 	Humans();
 };
 
+/** 
+* Skill: Each not empty Region your Orcs conquered this turn is worth 1 bonus Victory coin, at the end of your turn.
+*/
 class Orcs : public FantasyRaceBanner {
 private:
 
@@ -72,6 +83,9 @@ public:
 	Orcs();
 };
 
+/**
+* Skill: No Race benefit; their sheer number of tokens is enough!
+*/
 class Ratmen : public FantasyRaceBanner {
 private:
 

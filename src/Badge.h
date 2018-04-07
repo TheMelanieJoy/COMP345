@@ -7,17 +7,36 @@ using namespace std;
 
 class Badge {
 private:
+	/** The badge's name */
 	const char* name;
+	/** The badge's token value */
     int raceTokens;
 public:
+	/** Default constructor */
 	Badge();
+	/**
+	* Constructor
+	* @param const char* - The badge's name
+	* @param int - The badge's token value
+	*/
 	Badge(const char*, int);
+	/**
+	* Returns the badge's name
+	* @return The badge's name
+	*/
 	string getName();
+	/**
+	* Returns the badge's token value 
+	* @return The badge's token value
+	*/
 	int getRaceTokens();
 };
 
-/* Badge Subclasses */
+/* Subclasses for each badge in the game */
 
+/**
+* Skill: Collect 2 bonus Victory coins at the end of each turn your race hasn't yet gone into Decline.
+*/
 class Alchemist : public Badge {
 private:
 
@@ -39,6 +58,9 @@ public:
 	Bivouacking();
 };
 
+/**
+* Skill: You may conquer any Region with 1 less Race token than normal. A minimum of 1 token is still required.
+*/
 class Commando : public Badge {
 private:
 
@@ -95,6 +117,9 @@ public:
 	Hill();
 };
 
+/**
+* Skill: Collect 1 bonus Victory coin for any Region you occupy at turn's end.
+*/
 class Merchant : public Badge {
 private:
 
@@ -109,6 +134,9 @@ public:
 	Mounted();
 };
 
+/**
+* Skill: Each non-empty Region you conquer this turn is worth 1 bonus Victory coin at turn's end.
+*/
 class Pillaging : public Badge {
 private:
 
@@ -151,6 +179,9 @@ public:
 	Underworld();
 };
 
+/**
+* Skill: Collect 7 bonus Victory coins, once only, at the end of your first turn.
+*/
 class Wealthy : public Badge {
 private:
 

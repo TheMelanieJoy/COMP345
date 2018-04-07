@@ -11,6 +11,7 @@ class Player {
 private:
 	string name;
     int victoryCoins;
+	int bonusVictoryCoins;
 	FantasyRaceBanner* race;
 	FantasyRaceBanner* declinedRace;
 	Badge* badge;
@@ -35,6 +36,8 @@ public:
 	void declines_race(Map*, Deck*);
 	void addTokens(int);
 	void setTokens(int);
+	int getBonusCoins();
+	void setBonusCoins(int);
 	void set_strategy(Strategy*);
 	int select_action(int);
 };

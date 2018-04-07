@@ -310,6 +310,9 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 	}
 
 	//Conquers
+	// Amazons gain 4 extra conquer tokens during conquer
+	if (player->getRace()->getName().compare("Amazons") == 0)
+		player->addTokens(4);
 	while (player->currentTokens() > 0) {
 		int owned = 0;
 
@@ -368,20 +371,36 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 		}
 	}
 
+	// Amazons lose their 4 extra conquer tokens
+	if (player->getRace()->getName().compare("Amazons") == 0)
+		player->addTokens(-4);
+
+	/* Skeletons earn an extra token for every 2 non-empty regions conquered during a turn.
+		To do so, the bonusVictoryCoins is utilized as a counter of the number non-empty regions conquered */
+	if (player->getRace()->getName().compare("Skeletons") == 0) {
+		player->addTokens(player->getBonusCoins() / 2);
+		player->setBonusCoins(0);
+	}
+
 	if (regions->size() == 0)
 		phaseSubject->PhaseChanged(player->getName(), 3, "cannot redeploy: You don't own any regions.");
-	else
+	else {
+		// Alchemist earn 2 bonus coins if they have tokens on the map during the turn
+		if (player->getBadge()->getName().compare("Alchemist") == 0)
+			player->setBonusCoins(player->getBonusCoins() + 2);
 		while (player->currentTokens() > 0) {
 			int selectedRegion, numberOfTokens;
 			std::tie(selectedRegion, numberOfTokens) = player->redeploys(&m, regions);
 			phaseSubject->PhaseChanged(player->getName(), 3, "adds " + std::to_string(numberOfTokens) + " tokens to " + m.regions.at(regions->at(selectedRegion)).name);
 		}
+	}
 }
 
 
 void Tournament::plays_turn(Player* player) {
 	changeObserver();
 	bool newRace = false;
+	player->setBonusCoins(0);
 	//Player selects new race if they declined in the previous one
 	if (player->getRace() == NULL) {
 		pickingRace(player);
@@ -411,14 +430,21 @@ void Tournament::plays_turn(Player* player) {
 		//Player puts race in decline
 		phaseSubject->PhaseChanged(player->getName(), 5, "declines the " + player->getBadge()->getName() + " " + player->getRace()->getName());
 		player->declines_race(&m, &deck);
-
 	}
 	//Expanding through new conquests
 	else if (selectedMove == 2)
 		expanding(player, &regions);
 
 	//Player scores victory points
-	phaseSubject->PhaseChanged(player->getName(), 4, "scores " + std::to_string(player->scores(&m)) + " victory coins.");
+	phaseSubject->PhaseChanged(player->getName(), 4, "scores " + std::to_string(player->scores(&m)) + " victory coins and " + std::to_string(player->getBonusCoins()) + " bonus victory coins.");
+
+	// Stout can decline race after scoring
+	if (player->getBadge() != NULL &&  player->getBadge()->getName().compare("Stout") == 0)
+		if (player->select_action(currentTurn) == 1) {
+			//Player puts race in decline
+			phaseSubject->PhaseChanged(player->getName(), 5, "declines the " + player->getBadge()->getName() + " " + player->getRace()->getName());
+			player->declines_race(&m, &deck);
+		}
 
 	updateObserver();
 }

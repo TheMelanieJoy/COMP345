@@ -80,8 +80,3 @@ FantasyRaceBanner* Deck::getRace(int raceIndex) {
 Badge* Deck::getBadge(int badgeIndex) {
 	return badges.at(badgeIndex);
 }
-
-void Deck::displayAvailableRaces() {
-    for (int i = 0; i < 6; i++)
-		cout << i + 1 << ". " << badges.at(i)->getName() << " " << races.at(i)->getName() << endl;
-}

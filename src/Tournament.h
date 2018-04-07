@@ -12,6 +12,7 @@
 class Tournament {
 private:
 	// Constants
+	// Number of turn in the game, given the number of players
 	const int twoThreePlayersTurns = 10;
 	const int fourPlayersTurns = 9;
 	const int fivePlayersTurns = 8;

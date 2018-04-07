@@ -12,6 +12,7 @@ Dice::Dice() {
 }
 
 int Dice::roll() {
+	//Randomizes roll value between 1 and 6
     srand(time(NULL));
     int dieValue = rand() % 6 + 1;
     //3 die faces are blank
@@ -32,13 +33,11 @@ int Dice::roll() {
 		default:
 			zeroCounter++;
 	}
-
-    //cout << "You rolled a " << dieValue << "." << endl;
-
 	return dieValue;
 }
 
 void Dice::printRollPercentage() {
+	//Formats fixed-point to the 2nd digit
 	cout.setf(ios::fixed);
 	cout.setf(ios::showpoint);
 	cout.precision(2);
