@@ -8,44 +8,47 @@
 using std::cout;
 
 Deck::Deck() {
-    addRace(new Amazons());
-    addRace(new Dwarves());
-    addRace(new Elves());
-    addRace(new Ghouls());
-    addRace(new Giants());
-    addRace(new Halflings());
-    addRace(new Humans());
-    addRace(new Orcs());
-    addRace(new Ratmen());
-    addRace(new Skeletons());
-    addRace(new Sorcerers());
-    addRace(new Tritons());
-    addRace(new Trolls());
-    addRace(new Wizards());
-    
-    addBadge(new Alchemist());
-    addBadge(new Berserk());
-    addBadge(new Bivouacking());
-    addBadge(new Commando());
-    addBadge(new Diplomat());
-    addBadge(new DragonMaster());
-    addBadge(new Flying());
-    addBadge(new Forest());
-    addBadge(new Fortified());
-    addBadge(new Heroic());
-    addBadge(new Hill());
-    addBadge(new Merchant());
-    addBadge(new Mounted());
-    addBadge(new Pillaging());
-    addBadge(new Seafaring());
-    addBadge(new Spirit());
-    addBadge(new Stout());
-    addBadge(new Swamp());
-    addBadge(new Underworld());
-    addBadge(new Wealthy());
+	// Adds all the races into the deck
+	addRace(new Amazons());
+	addRace(new Dwarves());
+	addRace(new Elves());
+	addRace(new Ghouls());
+	addRace(new Giants());
+	addRace(new Halflings());
+	addRace(new Humans());
+	addRace(new Orcs());
+	addRace(new Ratmen());
+	addRace(new Skeletons());
+	addRace(new Sorcerers());
+	addRace(new Tritons());
+	addRace(new Trolls());
+	addRace(new Wizards());
 
+	// Adds all the badges into the deck
+	addBadge(new Alchemist());
+	addBadge(new Berserk());
+	addBadge(new Bivouacking());
+	addBadge(new Commando());
+	addBadge(new Diplomat());
+	addBadge(new DragonMaster());
+	addBadge(new Flying());
+	addBadge(new Forest());
+	addBadge(new Fortified());
+	addBadge(new Heroic());
+	addBadge(new Hill());
+	addBadge(new Merchant());
+	addBadge(new Mounted());
+	addBadge(new Pillaging());
+	addBadge(new Seafaring());
+	addBadge(new Spirit());
+	addBadge(new Stout());
+	addBadge(new Swamp());
+	addBadge(new Underworld());
+	addBadge(new Wealthy());
+
+	// Randomizes the order of the races and badges
 	srand(time(NULL));
-    std::random_shuffle(races.begin(), races.end());
+	std::random_shuffle(races.begin(), races.end());
 	std::random_shuffle(badges.begin(), badges.end());
 }
 

@@ -1,5 +1,4 @@
 #pragma once
-#define BADGE_H
 
 #include "stdafx.h"
 #include <string>
@@ -44,6 +43,9 @@ public:
 	Alchemist();
 };
 
+/**
+* Skill: You may use the Reinforcement die before each of your conquests
+*/
 class Berserk : public Badge {
 private:
 

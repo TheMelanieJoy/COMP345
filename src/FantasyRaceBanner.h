@@ -1,5 +1,4 @@
 #pragma once
-#define FANTASYRACEBANNER_H
 
 #include "stdafx.h"
 #include <string>
@@ -7,16 +6,34 @@ using namespace std;
 
 class FantasyRaceBanner {
 private:
+	/* The race's name */
 	const char* name;
+	/* The race's token value */
     int raceTokens;
 public:
+	/**
+	* Default constructor
+	*/
 	FantasyRaceBanner();
+	/**
+	* Constructor
+	* @param const char* - The race's name
+	* @param int - The race's token value
+	*/
 	FantasyRaceBanner(const char*, int);
+	/**
+	* Returns name
+	* @return The race's name
+	*/
 	string getName();
+	/**
+	* Returns raceTokens
+	* @return The race's token value
+	*/
 	int getRaceTokens();
 };
 
-//Subclasses for each race banner in the game
+/* Subclasses for each race banner in the game */
 
 /**
 * Skill: Four of your Amazon tokens may only be used for conquest

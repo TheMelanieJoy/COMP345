@@ -1,11 +1,9 @@
 #pragma once
-#define DICE_H
 
 #include "stdafx.h"
-#include <vector>
 
 /**
-* A six-sided die 
+* The six-sided reinforcement die 
 */
 class Dice {
 private:

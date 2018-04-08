@@ -10,7 +10,7 @@ Aggressive::Aggressive(Player * player) : Strategy(player) {}
 /* Aggressive player only declines if there are no tokens to redeploy.
 	Returns 1 if declining or 2 if expanding. */
 int Aggressive::select_action(int currentTurn) {
-	if (player->currentTokens() == 0)
+	if (player->getTokens() == 0)
 		return 1;
 	else
 		return 2;
@@ -18,7 +18,7 @@ int Aggressive::select_action(int currentTurn) {
 
 /* Aggressive player only abandons if they have 1 or 2 tokens left to use for conquering */
 int Aggressive::abandons(Map* map, vector<size_t>* regions) {
-	if (player->currentTokens() > 2)
+	if (player->getTokens() > 2)
 		return -1;
 	else {
 		//Player abandons a random region for simplicity's sake
@@ -50,9 +50,9 @@ int Aggressive::expands(Map* map, vector<size_t>* regions) {
 /* Aggressive player puts all of their redeployable tokens into one region */
 std::tuple<int, int> Aggressive::redeploys(Map* map, vector<size_t>* regions) {
 	int selectedRegion = 0;
-	int numberOfTokens = player->currentTokens();
+	int numberOfTokens = player->getTokens();
 
-	player->setTokens(player->currentTokens() - numberOfTokens);
+	player->setTokens(player->getTokens() - numberOfTokens);
 	map->regions.at(regions->at(selectedRegion)).tokens += numberOfTokens;
 	return std::make_tuple(selectedRegion, numberOfTokens);
 }
@@ -63,7 +63,7 @@ Defensive::Defensive(Player * player) : Strategy(player) {}
 	Returns 1 if declining or 2 if expanding. */
 int Defensive::select_action(int currentTurn) {
 	int initialTokenQuantity = player->getRace()->getRaceTokens() + player->getBadge()->getRaceTokens();
-	if (player->currentTokens() < (float)(initialTokenQuantity * 25 / 100))
+	if (player->getTokens() < (float)(initialTokenQuantity * 25 / 100))
 		return 1;
 	else
 		return 2;
@@ -79,7 +79,7 @@ int Defensive::abandons(Map* map, vector<size_t>* regions) {
 int Defensive::expands(Map* map, vector<size_t>* regions) {
 	int initialTokenQuantity = player->getRace()->getRaceTokens() + player->getBadge()->getRaceTokens();
 
-	if (player->currentTokens() < (float)(initialTokenQuantity * 50 / 100))
+	if (player->getTokens() < (float)(initialTokenQuantity * 50 / 100))
 		return -1;
 	else {
 		int strongestRegion = 0;
@@ -113,7 +113,7 @@ std::tuple<int, int> Defensive::redeploys(Map* map, vector<size_t>* regions) {
 			selectedRegion++;
 	}
 
-	player->setTokens(player->currentTokens() - numberOfTokens);
+	player->setTokens(player->getTokens() - numberOfTokens);
 	map->regions.at(regions->at(selectedRegion)).tokens += numberOfTokens;
 	return std::make_tuple(selectedRegion, numberOfTokens);
 }
@@ -133,7 +133,7 @@ int Moderate::select_action(int currentTurn) {
 	i.e. If they have no more tokens, they may or may not abandon a region. */
 int Moderate::abandons(Map* map, vector<size_t>* regions) {
 	srand(time(NULL));
-	if (player->currentTokens() > 0 || rand() % 2 == 0)
+	if (player->getTokens() > 0 || rand() % 2 == 0)
 		return -1;
 	else {
 		//Player abandons a random region for simplicity's sake
@@ -152,7 +152,7 @@ int Moderate::abandons(Map* map, vector<size_t>* regions) {
 int Moderate::expands(Map* map, vector<size_t>* regions) {
 	int initialTokenQuantity = player->getRace()->getRaceTokens() + player->getBadge()->getRaceTokens();
 
-	if (player->currentTokens() < (float)(initialTokenQuantity * 50 / 100))
+	if (player->getTokens() < (float)(initialTokenQuantity * 50 / 100))
 		return -1;
 	else {
 		int weakestRegion = 0;
@@ -170,7 +170,7 @@ int Moderate::expands(Map* map, vector<size_t>* regions) {
 
 /* Moderate player redeploys half of their remaining tokens to a region continuously until they no longer have any */
 std::tuple<int, int> Moderate::redeploys(Map* map, vector<size_t>* regions) {
-	int numberOfTokens = ceil((float)player->currentTokens() / 2);
+	int numberOfTokens = ceil((float)player->getTokens() / 2);
 	bool redeployDone = false;
 	int selectedRegion = 0;
 	int i = 2;
@@ -185,7 +185,7 @@ std::tuple<int, int> Moderate::redeploys(Map* map, vector<size_t>* regions) {
 		else
 			selectedRegion++;
 	}
-	player->setTokens(player->currentTokens() - numberOfTokens);
+	player->setTokens(player->getTokens() - numberOfTokens);
 	map->regions.at(regions->at(selectedRegion)).tokens += numberOfTokens;
 	return std::make_tuple(selectedRegion, numberOfTokens);
 }
@@ -232,10 +232,10 @@ std::tuple<int, int> Random::redeploys(Map* map, vector<size_t>* regions) {
 	srand(time(NULL));
 	int selectedRegion = rand() % regions->size();
 	srand(time(NULL));
-	int numberOfTokens = (rand() % player->currentTokens()) + 1;
+	int numberOfTokens = (rand() % player->getTokens()) + 1;
 	if (numberOfTokens == 0) numberOfTokens = 1;
 
-	player->setTokens(player->currentTokens() - numberOfTokens);
+	player->setTokens(player->getTokens() - numberOfTokens);
 	map->regions.at(regions->at(selectedRegion)).tokens += numberOfTokens;
 	return std::make_tuple(selectedRegion, numberOfTokens);
 }

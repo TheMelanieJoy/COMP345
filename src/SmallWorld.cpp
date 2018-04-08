@@ -10,6 +10,7 @@ using std::cin;
 
 #undef max
 
+/* Runs the application. Prompts user to select which type of tournament to run. */
 int main()
 {
 	std::cout << "Which tournament would you like to run?" << endl

@@ -1,17 +1,13 @@
 #pragma once
 
 #include "stdafx.h"
-#include <iostream>
+#include "Map.h"
 #include <string>
-#include <vector>
-#include <fstream>
-#include <sstream>
 
 class MapReader {
-public:
+private:
 	std::string path = "";
-
+public:
 	MapReader(std::string p) : path(p) {};
-
 	Map makeMap();
 };

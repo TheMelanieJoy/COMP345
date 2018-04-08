@@ -2,9 +2,11 @@
 #include "Dice.h"
 #include <ctime>
 #include <iostream>
-using namespace std;
+
+using std::cout;
 
 Dice::Dice() {
+	// Initializes all counters to 0
 	zeroCounter = 0;
 	oneCounter = 0;
 	twoCounter = 0;
@@ -12,14 +14,14 @@ Dice::Dice() {
 }
 
 int Dice::roll() {
-	//Randomizes roll value between 1 and 6
+	// Randomizes roll value between 1 and 6
     srand(time(NULL));
     int dieValue = rand() % 6 + 1;
-    //3 die faces are blank
+    // 3 die faces are blank
     if(dieValue > 3)
 	   dieValue = 0;
 
-	//Tracks percentage value of each die roll
+	// Tracks percentage value of each die roll
 	switch (dieValue) {
 		case 1:
 			oneCounter++;
@@ -37,11 +39,12 @@ int Dice::roll() {
 }
 
 void Dice::printRollPercentage() {
-	//Formats fixed-point to the 2nd digit
+	// Formats fixed-point to the 2nd digit
 	cout.setf(ios::fixed);
 	cout.setf(ios::showpoint);
 	cout.precision(2);
 	int totalRolls = zeroCounter + oneCounter + twoCounter + threeCounter;
+	// Prints statistics
 	cout << (float)zeroCounter / totalRolls * 100 << "% of total rolls were 0s." << endl
 		<< (float)oneCounter / totalRolls * 100 << "% of total rolls were 1s." << endl
 		<< (float)twoCounter / totalRolls * 100 << "% of total rolls were 2s." << endl

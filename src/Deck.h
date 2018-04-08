@@ -1,13 +1,12 @@
-/*
-	Contains the pile of race banners and badges that the user may take from
-*/
 #pragma once
-#define DECK_H
 
 #include "stdafx.h"
 #include "FantasyRaceBanner.h"
 #include <vector>
 
+/*
+* Contains the stacks of race banners and badges that the user may take from
+*/
 class Deck {
 private:
 	/* Contains all races that can be drawn by a player */

@@ -190,16 +190,16 @@ void Tournament::setup() {
 
 		switch (strategyInput) {
 		case 1:
-			players.at(i)->set_strategy(new Aggressive(players.at(i)));
+			players.at(i)->setStrategy(new Aggressive(players.at(i)));
 			break;
 		case 2:
-			players.at(i)->set_strategy(new Defensive(players.at(i)));
+			players.at(i)->setStrategy(new Defensive(players.at(i)));
 			break;
 		case 3:
-			players.at(i)->set_strategy(new Moderate(players.at(i)));
+			players.at(i)->setStrategy(new Moderate(players.at(i)));
 			break;
 		default:
-			players.at(i)->set_strategy(new Random(players.at(i)));
+			players.at(i)->setStrategy(new Random(players.at(i)));
 			break;
 		}
 	}
@@ -284,10 +284,12 @@ void Tournament::pickingRace(Player* player) {
 
 void Tournament::expanding(Player* player, vector<size_t>* regions) {
 	//Abandons
+	// Does not occur in the first turn of the game
 	if (currentTurn > 1) {
 		if (regions->size() > 0) {
 			int selectedRegion = 0;
 
+			// Loops until the player no longer wishes to abandon or owns no regions
 			while (regions->size() > 0 && selectedRegion >= 0) {
 				selectedRegion = player->abandons(&m, regions);
 
@@ -295,12 +297,13 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 					break;
 				phaseSubject->PhaseChanged(player->getName(), 1, "abandons " + m.regions.at((regions->at(selectedRegion))).name + ".");
 
+				// regions contains indices of regions owned by player
 				regions->clear();
 				for (int i = 0; i < m.regions.size(); i++) {
 					if (m.regions.at(i).owner && m.regions.at(i).owner == player && !m.regions.at(i).decline) {
 						regions->push_back(i);
 						if (m.regions.at(i).tokens > 1) {
-							player->addTokens(m.regions.at(i).tokens - 1);
+							player->setTokens(player->getTokens() + m.regions.at(i).tokens - 1);
 							m.regions.at(i).tokens = 1;
 						}
 					}
@@ -312,8 +315,9 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 	//Conquers
 	// Amazons gain 4 extra conquer tokens during conquer
 	if (player->getRace()->getName().compare("Amazons") == 0)
-		player->addTokens(4);
-	while (player->currentTokens() > 0) {
+		player->setTokens(player->getTokens() + 4);
+	// Loops until player no longer wishes to conquer, fails to conquer, or runs out of tokens
+	while (player->getTokens() > 0) {
 		int owned = 0;
 
 		for (const auto region : m.regions)
@@ -360,12 +364,13 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 	}
 
 	//Redeploy
+	// regions contains indices of regions owned by player
 	regions->clear();
 	for (int i = 0; i < m.regions.size(); i++) {
 		if (m.regions.at(i).owner && m.regions.at(i).owner == player && !m.regions.at(i).decline) {
 			regions->push_back(i);
 			if (m.regions.at(i).tokens > 1) {
-				player->addTokens(m.regions.at(i).tokens - 1);
+				player->setTokens(player->getTokens() + m.regions.at(i).tokens - 1);
 				m.regions.at(i).tokens = 1;
 			}
 		}
@@ -373,12 +378,12 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 
 	// Amazons lose their 4 extra conquer tokens
 	if (player->getRace()->getName().compare("Amazons") == 0)
-		player->addTokens(-4);
+		player->setTokens(player->getTokens() - 4);
 
 	/* Skeletons earn an extra token for every 2 non-empty regions conquered during a turn.
 		To do so, the bonusVictoryCoins is utilized as a counter of the number non-empty regions conquered */
 	if (player->getRace()->getName().compare("Skeletons") == 0) {
-		player->addTokens(player->getBonusCoins() / 2);
+		player->setTokens(player->getTokens() + player->getBonusCoins() / 2);
 		player->setBonusCoins(0);
 	}
 
@@ -388,7 +393,8 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 		// Alchemist earn 2 bonus coins if they have tokens on the map during the turn
 		if (player->getBadge()->getName().compare("Alchemist") == 0)
 			player->setBonusCoins(player->getBonusCoins() + 2);
-		while (player->currentTokens() > 0) {
+		// Loops until player no longer has any tokens
+		while (player->getTokens() > 0) {
 			int selectedRegion, numberOfTokens;
 			std::tie(selectedRegion, numberOfTokens) = player->redeploys(&m, regions);
 			phaseSubject->PhaseChanged(player->getName(), 3, "adds " + std::to_string(numberOfTokens) + " tokens to " + m.regions.at(regions->at(selectedRegion)).name);
@@ -399,20 +405,23 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 
 void Tournament::plays_turn(Player* player) {
 	changeObserver();
-	bool newRace = false;
+
 	player->setBonusCoins(0);
+	bool newRace = false;
+
 	//Player selects new race if they declined in the previous one
 	if (player->getRace() == NULL) {
 		pickingRace(player);
 		newRace = true;
 	}
 
+	// regions contains indices of regions owned by player
 	vector<size_t> regions = vector<size_t>(0);
 	for (int i = 0; i < m.regions.size(); i++) {
 		if (m.regions.at(i).owner && m.regions.at(i).owner == player && !m.regions.at(i).decline) {
 			regions.push_back(i);
 			if (m.regions.at(i).tokens > 1) {
-				player->addTokens(m.regions.at(i).tokens - 1);
+				player->setTokens(player->getTokens() + m.regions.at(i).tokens - 1);
 				m.regions.at(i).tokens = 1;
 			}
 		}

@@ -1,9 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
-#include "Dice.h"
-#include "Map.h"
 #include <string>
-using namespace std;
 
 Player::Player(string name) {
 	this->name = name;
@@ -14,12 +11,16 @@ Player::Player(string name) {
 	declinedBadge = NULL;
 }
 
-string Player::getName() {
-	return name;
+Player::~Player() {
+	delete race;
+	delete declinedRace;
+	delete badge;
+	delete declinedBadge;
+	delete strategy;
 }
 
-int Player::getVictoryCoins() {
-	return victoryCoins;
+string Player::getName() {
+	return name;
 }
 
 FantasyRaceBanner* Player::getRace() {
@@ -30,15 +31,64 @@ Badge* Player::getBadge() {
 	return badge;
 }
 
-void Player::add_coins(int coins) {
-    victoryCoins += coins;
+
+int Player::getVictoryCoins() {
+	return victoryCoins;
+}
+
+int Player::getBonusCoins() {
+	return bonusVictoryCoins;
+}
+
+int Player::getTokens() {
+	return raceTokens;
+}
+
+void Player::setVictoryCoins(int coins) {
+	victoryCoins = coins;
+}
+
+void Player::setBonusCoins(int coins) {
+	bonusVictoryCoins = coins;
+}
+
+void Player::setTokens(int tokens) {
+	if (tokens >= 0)
+		raceTokens = tokens;
+}
+
+void Player::setStrategy(Strategy *strategy) {
+	this->strategy = strategy;
+}
+
+
+int Player::select_action(int currentTurn) {
+	return strategy->select_action(currentTurn);
+}
+
+void Player::declines_race(Map* m, Deck* deck) {
+	// Returns old declined race and badge to the bottom of the deck
+	if (declinedRace != NULL) {
+		deck->addRace(declinedRace);
+		deck->addBadge(declinedBadge);
+	}
+	// Declines race and badge
+	declinedRace = race;
+	declinedBadge = badge;
+	// Player has no race or badge for the rest of the turn
+	race = NULL;
+	badge = NULL;
+	// Puts all tokens on the map in decline
+	m->decline(this);
 }
 
 void Player::picks_race(FantasyRaceBanner* race, Badge* badge) {
+	// Sets a new race and badge
 	this->race = race;
 	this->badge = badge;
 	raceTokens = race->getRaceTokens() + badge->getRaceTokens();
 
+	// Wealthy earns a bonus 7 coins for their first turn
 	if (badge->getName().compare("Wealthy") == 0)
 		setBonusCoins(bonusVictoryCoins + 7);
 }
@@ -54,17 +104,21 @@ int Player::expands(Map* map, vector<size_t>* regions) {
 bool Player::conquers(Map* m, size_t region, Dice* dice) {
 	int neededTokens = m->regions.at(region).tokens + 2;
 
+	if (m->regions.at(region).mountain)
+		neededTokens++;
+
 	// Commando requires 1 less token to conquer
 	if (getBadge()->getName().compare("Commando") == 0)
 		if (neededTokens > 1)
 			neededTokens--;
 
-	if (m->regions.at(region).mountain)
-		neededTokens++;
-
 	int roll = 0;
 	bool rolled = false;
-	if(raceTokens < neededTokens) {
+
+	// Berserk can roll the die before a conquest
+	if (getBadge()->getName().compare("Berserk") == 0)
+		roll = dice->roll();
+	else if(raceTokens < neededTokens) {
 		if (m->regions.at(region).tokens == 0)
 			return false;
 		 roll = dice->roll();		
@@ -77,22 +131,32 @@ bool Player::conquers(Map* m, size_t region, Dice* dice) {
 		if (m->regions.at(region).owner) {
 			// Orcs and Pillaging earn 1 bonus coin for every non-empty region conquered that turn
 			// Skeletons don't earn bonus coins, but utilize the method for their own skill
-			if (getRace()->getName().compare("Orcs") == 0 ||
+			if (m->regions.at(region).owner->getRace() != NULL && m->regions.at(region).owner->getBadge() != NULL &&
+				(getRace()->getName().compare("Orcs") == 0 ||
 				getRace()->getName().compare("Skeletons") == 0 ||
-				getBadge()->getName().compare("Pillaging") == 0) {
+				getBadge()->getName().compare("Pillaging") == 0)) {
 
 				setBonusCoins(bonusVictoryCoins + 1);
 			}
+			// Elves get back all of their tokens when their region has been conquered by an enemy
 			if (m->regions.at(region).owner->getRace() != NULL && m->regions.at(region).owner->getRace()->getName().compare("Elves") == 0)
-				m->regions.at(region).owner->addTokens(m->regions.at(region).tokens);
+				m->regions.at(region).owner->setTokens(m->regions.at(region).owner->raceTokens + m->regions.at(region).tokens);
+			// Previous owner gets back all but one token from their captured region
 			else
-				m->regions.at(region).owner->addTokens(m->regions.at(region).tokens - 1);
+				m->regions.at(region).owner->setTokens(m->regions.at(region).owner->raceTokens + m->regions.at(region).tokens - 1);
 		}
 
 		m->regions.at(region).owner = this;
 		m->regions.at(region).decline = false;
 
+		
 		if (!rolled) {
+			// Berserk may require less tokens for conquer depending on die roll outcome
+			if (m->regions.at(region).owner->getBadge() != NULL && getBadge()->getName().compare("Berserk") == 0) {
+				neededTokens -= roll;
+				if (neededTokens < 1)
+					neededTokens = 1;
+			}
 			m->regions.at(region).tokens = neededTokens;
 			raceTokens -= neededTokens;
 		}
@@ -115,6 +179,7 @@ int Player::scores(Map * m) {
 	int points = 0;
 
 	for(const auto region : m->regions) {
+		// Player earns one victory coin for each region they own
 		if (region.owner == this) {
 			points += 1;
 			// Merchant gains extra coin for each region owned
@@ -126,49 +191,4 @@ int Player::scores(Map * m) {
 	victoryCoins += points;
 
 	return points;
-}
-
-void Player::declines_race(Map* m, Deck* deck) {
-	//Returns old declined race and badge to the bottom of the deck
-	if (declinedRace != NULL) {
-		deck->addRace(declinedRace);
-		deck->addBadge(declinedBadge);
-	}
-	declinedRace = race;
-	declinedBadge = badge;
-	race = NULL;
-	badge = NULL;
-	m->decline(this);
-}
-
-void Player::addTokens(int tokens)
-{
-	raceTokens += tokens;
-}
-
-void Player::setTokens(int tokens)
-{
-	if(tokens >= 0)
-		raceTokens = tokens;
-}
-
-int Player::currentTokens()
-{
-	return raceTokens;
-}
-
-int Player::getBonusCoins() {
-	return bonusVictoryCoins;
-}
-
-void Player::setBonusCoins(int coins) {
-	bonusVictoryCoins = coins;
-}
-
-void Player::set_strategy(Strategy *strategy) {
-	this->strategy = strategy;
-}
-
-int Player::select_action(int currentTurn) {
-	return strategy->select_action(currentTurn);
 }
