@@ -157,6 +157,13 @@ void Tournament::setup() {
 	bool mapReady = false;
 
 	string mapDirectory = "./maps/" +  std::to_string(numberOfPlayers) + "players.map";
+	
+	
+
+	MapReader mr = MapReader(mapDirectory);
+
+	m = mr.makeMap();
+	
 	/*
 	//keeps asking for a map until you succeed
 	while (!mapReady) {
