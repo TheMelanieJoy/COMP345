@@ -53,6 +53,7 @@ Map MapReader::makeMap() {
 	int regions = 0;
 	parseInt >> regions;
 
+
 	Map m = Map(regions, regions*regions);
 
 	//reading all regions
@@ -68,7 +69,16 @@ Map MapReader::makeMap() {
 
 	//output
 	s = "";
+
 	bool named = false;
+	bool details = false;
+	bool tribal = false;
+	bool coastal = false;
+	bool magic = false;
+	bool cavern = false;
+
+	int stage = 0;
+
 
 	//go through the map getting all region names until we reach the links
 	while (c != '[') {
@@ -88,15 +98,54 @@ Map MapReader::makeMap() {
 
 			c = words.at(word)[pos];
 		}
+		else if (details) {
+			while (stage < 4) {
+				if (words.at(word).size() <= pos) {
+					std::cout << "Illegal map." << endl;
+					return Map(0, 0);
+				}
+				stage++;
+				pos++;
+				c = words.at(word)[pos];
+				if (c == '1') {
+					switch (stage)
+					{
+					case 0: tribal = true;
+						break;
+					case 1: coastal = true;
+						break;
+					case 2: magic = true;
+						break;
+					case 3: cavern = true;
+						break;
+					default:
+						break;
+					}
+				}
+			}
+
+			m.addRegion(s, c, tribal, coastal, magic, cavern);
+
+			word++;
+			pos = 0;
+			s = "";
+			c = words.at(word)[pos];
+			details = false;
+			named = false;
+
+		}
 		else {
 			if (c == ',') {
-				c = words.at(word)[pos + 1];
-				m.addRegion(s, c);
-				
-				word++;
-				pos = 0;
-				s = "";
+				details = true;
+				pos++;
 				c = words.at(word)[pos];
+				//m.addRegion(s, c);
+				
+				//word++;
+				//pos = 0;
+				//s = "";
+				//c = words.at(word)[pos];
+
 				
 			}
 			else if (words.at(word).size() <= pos) {
@@ -162,6 +211,8 @@ Map MapReader::makeMap() {
 			if (pos >= words.at(word).size()) {
 				pos = 2;
 				word++;
+				if (word > 9)
+					pos++;
 				firstLink = true;
 
 				std::stringstream parseS1(s1);
@@ -180,6 +231,9 @@ Map MapReader::makeMap() {
 
 		}
 	}
+
+	if (m.empty())
+		cout << "what";
 
 
 	return m;

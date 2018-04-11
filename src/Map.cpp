@@ -48,6 +48,11 @@ void Map::addRegion(string name, char type) {
 	
 }
 
+void Map::addRegion(string name, char type, bool tribal, bool coastal, bool magic, bool cavern) {
+	//cout << "added a region" << endl;
+	regions.push_back(region(name, (int) type - '0', tribal, coastal, magic, cavern));
+}
+
 void Map::addLink(const size_t region1Index, const size_t region2Index) {
 	//if the link index is bigger than the ammount of regions, something has gone wrong
 	if (regions.size() <= region1Index || regions.size() <= region2Index) {

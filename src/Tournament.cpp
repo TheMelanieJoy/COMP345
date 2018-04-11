@@ -156,6 +156,8 @@ void Tournament::updateObserver() {
 void Tournament::setup() {
 	bool mapReady = false;
 
+	string mapDirectory = "./maps/" +  std::to_string(numberOfPlayers) + "players.map";
+	/*
 	//keeps asking for a map until you succeed
 	while (!mapReady) {
 		cout << "Maps:" << endl << endl;
@@ -173,7 +175,7 @@ void Tournament::setup() {
 
 		else
 			mapReady = true;
-	}
+	}*/
 
 	//Gets names for all players
 	for (int i = 0; i < numberOfPlayers; i++) {
