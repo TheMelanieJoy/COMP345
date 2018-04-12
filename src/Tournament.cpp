@@ -168,7 +168,7 @@ void Tournament::setup() {
 	MapReader mr = MapReader(mapDirectory);
 	m = mr.makeMap();
 
-	cout << m.toString() << endl;
+	cout << m << endl;
 
 	//Gets names for all players
 	for (int i = 0; i < numberOfPlayers; i++) {

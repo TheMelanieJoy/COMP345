@@ -202,4 +202,9 @@ public:
 	void decline(Player*);
 
 	string toString();
+
+	friend ostream &operator<<(ostream &output, Map &m) {
+		output << m.toString();
+		return output;
+	}
 };
