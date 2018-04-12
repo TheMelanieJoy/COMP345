@@ -10,6 +10,8 @@ private:
 	const char* name;
 	/* The race's token value */
     int raceTokens;
+	/* The race's defense tokens (i.e. holes-in-the-ground, troll lairs) */
+	int defense;
 public:
 	/**
 	* Default constructor
@@ -31,6 +33,16 @@ public:
 	* @return The race's token value
 	*/
 	int getRaceTokens();
+	/**
+	* Returns defenses
+	* @return The race's number of defense tokens available
+	*/
+	int getDefense();
+	/**
+	* Sets defenses to a given value
+	* @param The race's new number of defense tokens available
+	*/
+	void setDefense(int);
 };
 
 /* Subclasses for each race banner in the game */
@@ -45,6 +57,9 @@ public:
 	Amazons();
 };
 
+/**
+* Skill: Each Mine Region your Dwarves occupy is worth 1 bonus Victory coin, at the end of your turn.
+*/
 class Dwarves : public FantasyRaceBanner {
 private:
 
@@ -68,7 +83,9 @@ private:
 public:
 	Ghouls();
 };
-
+/**
+* Skill: Your Giants may conquer a Mountain Region at a cost of 1 less Giant token than normal.
+*/
 class Giants : public FantasyRaceBanner {
 private:
 
@@ -76,13 +93,19 @@ public:
 	Giants();
 };
 
+/**
+* Skill: Place a Hole-in-the-Ground in each of the first 2 Regions you conquer, to make them immune to enemy conquests.
+*/
 class Halflings : public FantasyRaceBanner {
 private:
-    int holes_in_the_ground = 2;
+
 public:
 	Halflings();
 };
 
+/**
+* Skill: Each Farmland Region your Humans occupy is worth 1 bonus Victory coin, at the end of your turn.
+*/
 class Humans : public FantasyRaceBanner {
 private:
 
@@ -131,13 +154,19 @@ public:
 	Tritons();
 };
 
+/**
+* Skill: Place a Troll's Lair in each Region your Trolls occupy.
+*/
 class Trolls : public FantasyRaceBanner {
 private:
-    int trollLairs = 10;
+
 public:
 	Trolls();
 };
 
+/**
+* Skill: Each Magic Region your Wizards occupy is worth 1 bonus Victory coin, at the end of your turn.
+*/
 class Wizards : public FantasyRaceBanner {
 private:
 	

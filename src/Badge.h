@@ -10,6 +10,8 @@ private:
 	const char* name;
 	/** The badge's token value */
     int raceTokens;
+	/* The badge's defense tokens (i.e. fortresses, encampments) */
+	int defense;
 public:
 	/** Default constructor */
 	Badge();
@@ -29,6 +31,16 @@ public:
 	* @return The badge's token value
 	*/
 	int getRaceTokens();
+	/**
+	* Returns defenses
+	* @return The badges's number of defense tokens available
+	*/
+	int getDefense();
+	/**
+	* Sets defenses to a given value
+	* @param The badge's new number of defense tokens available
+	*/
+	void setDefense(int);
 };
 
 /* Subclasses for each badge in the game */
@@ -55,7 +67,7 @@ public:
 
 class Bivouacking : public Badge {
 private:
-    int encampments = 5;
+
 public:
 	Bivouacking();
 };
@@ -84,6 +96,9 @@ public:
 	DragonMaster();
 };
 
+/**
+* Skill: You may conquer any Region of the map except Seas and Lakes.
+*/
 class Flying : public Badge {
 private:
 
@@ -91,6 +106,9 @@ public:
 	Flying();
 };
 
+/**
+* Skill: Collect 1 bonus Victory coin for each Forest Region you occupy at turn's end.
+*/
 class Forest : public Badge {
 private:
 
@@ -100,7 +118,7 @@ public:
 
 class Fortified : public Badge {
 private:
-    int fortresses = 6;
+
 public:
 	Fortified();
 };
@@ -112,6 +130,9 @@ public:
 	Heroic();
 };
 
+/**
+* Skill: Collect 1 bonus Victory coin for each Hill Region you occupy at turn's end.
+*/
 class Hill : public Badge {
 private:
 
@@ -129,6 +150,9 @@ public:
 	Merchant();
 };
 
+/**
+* Skill: You may conquer any Hill or Farmland Region with 1 less Race token than normal.
+*/
 class Mounted : public Badge {
 private:
 
@@ -160,6 +184,9 @@ public:
 	Spirit();
 };
 
+/**
+* Skill: You may go In Decline at the end of a regular turn of conquests, after scoring.
+*/
 class Stout : public Badge {
 private:
 
@@ -167,6 +194,9 @@ public:
 	Stout();
 };
 
+/**
+* Skill: Collect 1 bonus Victory coin for each Swamp Region you occupy at turn's end.
+*/
 class Swamp : public Badge {
 private:
 
@@ -174,6 +204,9 @@ public:
 	Swamp();
 };
 
+/**
+* Skill: You may conquer any Region with a Cavern with 1 less Race token than normal.
+*/
 class Underworld : public Badge {
 private:
 

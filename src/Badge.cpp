@@ -6,11 +6,13 @@ using namespace std;
 Badge::Badge() {
 	name = "";
 	raceTokens = 0;
+	defense = 0;
 }
 
 Badge::Badge(const char* name, int raceTokens) {
 	this->name = name;
     this->raceTokens = raceTokens;
+	defense = 0;
 }
 
 string Badge::getName() {
@@ -21,6 +23,14 @@ int Badge::getRaceTokens() {
 	return raceTokens;
 }
 
+int Badge::getDefense() {
+	return defense;
+}
+
+void Badge::setDefense(int defense) {
+	this->defense = defense;
+}
+
 Alchemist::Alchemist() : Badge("Alchemist", 4) {
 }
 
@@ -28,6 +38,7 @@ Berserk::Berserk() : Badge("Berserk", 4) {
 }
 
 Bivouacking::Bivouacking() : Badge("Bivouacking", 5) {
+	setDefense(5);
 }
 
 Commando::Commando() : Badge("Commando", 4) {
@@ -46,6 +57,7 @@ Forest::Forest() : Badge("Forest", 4) {
 }
 
 Fortified::Fortified() : Badge("Fortified", 3) {
+	setDefense(6);
 }
 
 Heroic::Heroic() : Badge("Heroic", 5) {

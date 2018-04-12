@@ -104,13 +104,39 @@ int Player::expands(Map* map, vector<size_t>* regions) {
 bool Player::conquers(Map* m, size_t region, Dice* dice) {
 	int neededTokens = m->regions.at(region).tokens + 2;
 
+	// Defenses increase the number of needed tokens
 	if (m->regions.at(region).mountain)
+		neededTokens++;
+	if (m->regions.at(region).encampment)
+		neededTokens++;
+	if (m->regions.at(region).fortress)
+		neededTokens++;
+	if (m->regions.at(region).lair)
 		neededTokens++;
 
 	// Commando requires 1 less token to conquer
 	if (getBadge()->getName().compare("Commando") == 0)
 		if (neededTokens > 1)
 			neededTokens--;
+
+	// Mounted requires 1 less token to conquer hills and farmlands
+	if (getBadge() != NULL && getBadge()->getName().compare("Mounted") == 0)
+		if (m->regions.at(region).type == m->regions.at(region).HILL ||
+			m->regions.at(region).type == m->regions.at(region).FARMLAND)
+			neededTokens--;
+
+	// Underworld requires 1 less token to conquer caverns
+	if (getBadge() != NULL && getBadge()->getName().compare("Underworld") == 0)
+		if (m->regions.at(region).cavern)
+			neededTokens--;
+
+	// Giants requires 1 less token to conquer mountains
+	if (getRace() != NULL && getRace()->getName().compare("Giants") == 0)
+		if (m->regions.at(region).type == m->regions.at(region).MOUNTAIN)
+			neededTokens--;
+
+	if (neededTokens < 1)
+		neededTokens = 1;
 
 	int roll = 0;
 	bool rolled = false;
@@ -130,11 +156,14 @@ bool Player::conquers(Map* m, size_t region, Dice* dice) {
 		// Return all but 1 token to old conquerer EXCEPT if the old conquerer is an elf, in which case, return all their tokens
 		if (m->regions.at(region).owner) {
 			// Orcs and Pillaging earn 1 bonus coin for every non-empty region conquered that turn
+			if (getRace()->getName().compare("Orcs") == 0)
+				setBonusCoins(bonusVictoryCoins + 1);
+			if (getBadge()->getName().compare("Pillaging") == 0)
+				setBonusCoins(bonusVictoryCoins + 1);
+
 			// Skeletons don't earn bonus coins, but utilize the method for their own skill
 			if (m->regions.at(region).owner->getRace() != NULL && m->regions.at(region).owner->getBadge() != NULL &&
-				(getRace()->getName().compare("Orcs") == 0 ||
-				getRace()->getName().compare("Skeletons") == 0 ||
-				getBadge()->getName().compare("Pillaging") == 0)) {
+				getRace()->getName().compare("Skeletons") == 0) {
 
 				setBonusCoins(bonusVictoryCoins + 1);
 			}
@@ -164,6 +193,22 @@ bool Player::conquers(Map* m, size_t region, Dice* dice) {
 			m->regions.at(region).tokens = raceTokens;
 			setTokens(0);
 		}
+
+		// Trolls place a lair on each occupied region
+		if (race->getName().compare("Trolls") == 0) {
+			if (!m->regions.at(region).lair && race->getDefense() > 0) {
+				m->regions.at(region).lair == true;
+				race->setDefense(race->getDefense() - 1);
+			}
+		}
+
+		// Halflings place a hole-in-the-ground on their first 2 occupied regions
+		if (race->getName().compare("Halflings") == 0) {
+			if (!m->regions.at(region).hole && race->getDefense() > 0) {
+				m->regions.at(region).hole == true;
+				race->setDefense(race->getDefense() - 1);
+			}
+		}
 		return true;
 	}
 	else {
@@ -182,13 +227,44 @@ int Player::scores(Map * m) {
 		// Player earns one victory coin for each region they own
 		if (region.owner == this) {
 			points += 1;
-			// Merchant gains extra coin for each region owned
+			// Merchant gains extra coin for each region occupied
 			if (getBadge() != NULL && getBadge()->getName().compare("Merchant") == 0)
 				setBonusCoins(bonusVictoryCoins + 1);
+
+			// Hill earns an extra victory coin for each hill occupied
+			if (getBadge() != NULL && getBadge()->getName().compare("Hill") == 0)
+				if (region.type == region.HILL)
+					setBonusCoins(bonusVictoryCoins + 1);
+
+			// Humans earn an extra victory coin for each farmland occupied
+			if (getRace() != NULL && getRace()->getName().compare("Humans") == 0)
+				if (region.type == region.FARMLAND)
+					setBonusCoins(bonusVictoryCoins + 1);
+
+			// Forest earns an extra victory coin for each forest occupied
+			if (getBadge() != NULL && getBadge()->getName().compare("Forest") == 0)
+				if (region.type == region.FOREST)
+					setBonusCoins(bonusVictoryCoins + 1);
+			
+			// Swamp earns an extra victory coin for each swamp occupied
+			if (getBadge() != NULL && getBadge()->getName().compare("Swamp") == 0)
+				if (region.type == region.SWAMP)
+					setBonusCoins(bonusVictoryCoins + 1);
+
+			// Wizards earn an extra victory coin for each magic region occupied
+			if (getBadge() != NULL && getBadge()->getName().compare("Fortified") == 0)
+				if (region.fortress)
+					setBonusCoins(bonusVictoryCoins + 1);
+
+			// Wizards earn an extra victory coin for each magic region occupied
+			if (getRace() != NULL && getRace()->getName().compare("Wizards") == 0)
+				if (region.magic)
+					setBonusCoins(bonusVictoryCoins + 1);
 		}
 	}
 
 	victoryCoins += points;
+	victoryCoins += bonusVictoryCoins;
 
 	return points;
 }

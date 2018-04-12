@@ -7,6 +7,10 @@
 #include <limits>
 #include <ctime>
 
+using std::cin;
+using std::cout;
+using std::to_string;
+
 #undef max;
 
 Tournament::Tournament(int numberOfPlayers) {
@@ -158,31 +162,8 @@ void Tournament::setup() {
 
 	string mapDirectory = "./maps/" +  std::to_string(numberOfPlayers) + "players.map";
 	
-	
-
 	MapReader mr = MapReader(mapDirectory);
-
 	m = mr.makeMap();
-	
-	/*
-	//keeps asking for a map until you succeed
-	while (!mapReady) {
-		cout << "Maps:" << endl << endl;
-		string mapPath = dir();
-
-		MapReader mr = MapReader(mapPath);
-
-		m = mr.makeMap();
-
-		if (!m.linked())
-			cout << "Map isn't valid" << endl;
-
-		else if (m.empty())
-			cout << "Map is empty" << endl;
-
-		else
-			mapReady = true;
-	}*/
 
 	//Gets names for all players
 	for (int i = 0; i < numberOfPlayers; i++) {
@@ -337,14 +318,17 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 			phaseSubject->PhaseChanged(player->getName(), 2, "cannot expand further: You have conquered all regions.");
 			break;
 		}
-		if (owned > 0) {
+		// Flying's can conquer regions that aren't linked to their owned region
+		if (owned > 0 && player->getBadge()->getName().compare("Flying") != 0) {
 			regions->clear();
 			for (const auto link : m.links) {
 				//we're only looking for the links that start with our region
 				if (m.regions.at(link.region1).owner && m.regions.at(link.region1).owner == player) {
 					if (!(std::find(regions->begin(), regions->end(), link.region2) != regions->end())) {
 						if (!m.regions.at(link.region2).owner || m.regions.at(link.region2).owner != player) {
-							regions->push_back(link.region2);
+							// Holes-in-the-ground may not be conquered
+							if(!m.regions.at(link.region2).hole)
+								regions->push_back(link.region2);
 						}
 					}
 				}
@@ -353,7 +337,9 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 		else {
 			regions->clear();
 			for (int i = 0; i < m.regions.size(); i++) {
-				regions->push_back(i);
+				// Holes-in-the-ground may not be conquered
+				if (!m.regions.at(i).hole)
+					regions->push_back(i);
 			}
 		}
 
@@ -454,7 +440,8 @@ void Tournament::plays_turn(Player* player) {
 		expanding(player, &regions);
 
 	//Player scores victory points
-	phaseSubject->PhaseChanged(player->getName(), 4, "scores " + std::to_string(player->scores(&m)) + " victory coins and " + std::to_string(player->getBonusCoins()) + " bonus victory coins.");
+	int score = player->scores(&m);
+	phaseSubject->PhaseChanged(player->getName(), 4, "scores " + std::to_string(score) + " victory coins and " + std::to_string(player->getBonusCoins()) + " bonus victory coins.");
 
 	// Stout can decline race after scoring
 	if (player->getBadge() != NULL &&  player->getBadge()->getName().compare("Stout") == 0)
@@ -466,7 +453,6 @@ void Tournament::plays_turn(Player* player) {
 
 	updateObserver();
 }
-
 
 void Tournament::run() {
 	//string str = "Sent  armies to ";

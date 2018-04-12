@@ -6,11 +6,13 @@ using namespace std;
 FantasyRaceBanner::FantasyRaceBanner() {
 	name = "";
 	raceTokens = 0;
+	defense = 0;
 }
 
 FantasyRaceBanner::FantasyRaceBanner(const char* name, int raceTokens) {
 	this->name = name;
     this->raceTokens = raceTokens;
+	defense = 0;
 }
 
 string FantasyRaceBanner::getName() {
@@ -19,6 +21,14 @@ string FantasyRaceBanner::getName() {
 
 int FantasyRaceBanner::getRaceTokens() {
 	return raceTokens;
+}
+
+int FantasyRaceBanner::getDefense() {
+	return defense;
+}
+
+void FantasyRaceBanner::setDefense(int defense) {
+	this->defense = defense;
 }
 
 Amazons::Amazons() : FantasyRaceBanner("Amazons", 6) {
@@ -37,6 +47,7 @@ Giants::Giants() : FantasyRaceBanner("Giants", 6) {
 }
 
 Halflings::Halflings() : FantasyRaceBanner("Halflings", 6) {
+	setDefense(2);
 }
 
 Humans::Humans() : FantasyRaceBanner("Humans", 5) {
@@ -58,6 +69,7 @@ Tritons::Tritons() : FantasyRaceBanner("Tritons", 6) {
 }
 
 Trolls::Trolls() : FantasyRaceBanner("Trolls", 5) {
+	setDefense(10);
 }
 
 Wizards::Wizards() : FantasyRaceBanner("Wizards", 5) {

@@ -1,5 +1,6 @@
 #include "Strategy.h"
 #include <ctime>
+#include <algorithm>
 
 Strategy::Strategy(Player * player) {
 	this->player = player;
@@ -35,6 +36,8 @@ int Aggressive::abandons(Map* map, vector<size_t>* regions) {
 /* Aggressive player conquers the least reinforced region.
 They stop conquering once they run out of race tokens */
 int Aggressive::expands(Map* map, vector<size_t>* regions) {
+	std::random_shuffle(regions->begin(), regions->end());
+
 	int weakestRegion = 0;
 	int weakestRegionTokens = map->regions.at(0).tokens;
 	for (int i = 1; i < regions->size() - 1; i++) {
@@ -49,7 +52,9 @@ int Aggressive::expands(Map* map, vector<size_t>* regions) {
 
 /* Aggressive player puts all of their redeployable tokens into one region */
 std::tuple<int, int> Aggressive::redeploys(Map* map, vector<size_t>* regions) {
-	int selectedRegion = 0;
+	// Selects a random region to redeploy to for simplicity
+	srand(time(NULL));
+	int selectedRegion = rand() % regions->size();
 	int numberOfTokens = player->getTokens();
 
 	player->setTokens(player->getTokens() - numberOfTokens);
@@ -77,6 +82,7 @@ int Defensive::abandons(Map* map, vector<size_t>* regions) {
 /* Defensive player conquers the most reinforced region.
 	They stop conquering when they have less than 50% of their initial number of tokens. */
 int Defensive::expands(Map* map, vector<size_t>* regions) {
+	std::random_shuffle(regions->begin(), regions->end());
 	int initialTokenQuantity = player->getRace()->getRaceTokens() + player->getBadge()->getRaceTokens();
 
 	if (player->getTokens() < (float)(initialTokenQuantity * 50 / 100))
@@ -97,6 +103,7 @@ int Defensive::expands(Map* map, vector<size_t>* regions) {
 
 /* Defensive player distributes tokens among its regions as evenly as possible */
 std::tuple<int, int> Defensive::redeploys(Map* map, vector<size_t>* regions) {
+	std::random_shuffle(regions->begin(), regions->end());
 	int numberOfTokens = 1;
 	bool redeployDone = false;
 	int selectedRegion = 0;
@@ -132,6 +139,7 @@ int Moderate::select_action(int currentTurn) {
 /* Moderate player randomly opts to abandon a region if they no longer have a region for use during conquer
 	i.e. If they have no more tokens, they may or may not abandon a region. */
 int Moderate::abandons(Map* map, vector<size_t>* regions) {
+	std::random_shuffle(regions->begin(), regions->end());
 	srand(time(NULL));
 	if (player->getTokens() > 0 || rand() % 2 == 0)
 		return -1;
@@ -150,6 +158,7 @@ int Moderate::abandons(Map* map, vector<size_t>* regions) {
 /* Moderate player conquers the least reinforced region.
 	They stop conquering when they have less than 50% of their initial number of tokens. */
 int Moderate::expands(Map* map, vector<size_t>* regions) {
+	std::random_shuffle(regions->begin(), regions->end());
 	int initialTokenQuantity = player->getRace()->getRaceTokens() + player->getBadge()->getRaceTokens();
 
 	if (player->getTokens() < (float)(initialTokenQuantity * 50 / 100))
@@ -170,6 +179,7 @@ int Moderate::expands(Map* map, vector<size_t>* regions) {
 
 /* Moderate player redeploys half of their remaining tokens to a region continuously until they no longer have any */
 std::tuple<int, int> Moderate::redeploys(Map* map, vector<size_t>* regions) {
+	std::random_shuffle(regions->begin(), regions->end());
 	int numberOfTokens = ceil((float)player->getTokens() / 2);
 	bool redeployDone = false;
 	int selectedRegion = 0;
