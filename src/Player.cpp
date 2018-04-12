@@ -256,9 +256,9 @@ int Player::scores(Map * m) {
 					setBonusCoins(bonusVictoryCoins + 1);
 
 			// Dwarves earn an extra victory coin for each mine region occupied
-			if (getRace() != NULL && getRace()->getName().compare("Dwarves") == 0)
+			/*if (getRace() != NULL && getRace()->getName().compare("Dwarves") == 0)
 				if (region.mine)
-					setBonusCoins(bonusVictoryCoins + 1);
+					setBonusCoins(bonusVictoryCoins + 1);*/
 		}
 	}
 

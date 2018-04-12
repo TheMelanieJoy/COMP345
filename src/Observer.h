@@ -234,7 +234,10 @@ public:
 		cout << endl;
 
 		for (unsigned int i = 0; i < sItem->cards.size() && i < sItem->players.size(); i++) {
-			cout << sItem->players[i] << " has the " << sItem->cards[i] << endl;
+			if (sItem->cards[i] == "")
+				cout << sItem->players[i] << " doesn't have a current race" << endl;
+			else
+				cout << sItem->players[i] << " has the " << sItem->cards[i] << endl;
 		}
 
 	}

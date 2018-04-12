@@ -121,6 +121,8 @@ void Tournament::updateObserver() {
 
 		if (p->getBadge())
 			hands.push_back(p->getBadge()->getName() + " " + p->getRace()->getName());
+		else
+			hands.push_back("");
 
 		points.push_back(p->getVictoryCoins());
 	}
