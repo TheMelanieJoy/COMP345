@@ -6,6 +6,7 @@
 #include <string>
 #include <limits>
 #include <ctime>
+#include <algorithm>
 
 using std::cin;
 using std::cout;
@@ -279,6 +280,9 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 	// Does not occur in the first turn of the game
 	if (currentTurn > 1) {
 		if (regions->size() > 0) {
+			srand(time(NULL));
+			std::random_shuffle(regions->begin(), regions->end());
+
 			int selectedRegion = 0;
 
 			// Loops until the player no longer wishes to abandon or owns no regions
@@ -308,6 +312,10 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 	// Amazons gain 4 extra conquer tokens during conquer
 	if (player->getRace()->getName().compare("Amazons") == 0)
 		player->setTokens(player->getTokens() + 4);
+
+	// Counter for skeletons
+	int ownedRegionsConquered = 0;
+
 	// Loops until player no longer wishes to conquer, fails to conquer, or runs out of tokens
 	while (player->getTokens() > 0) {
 		int owned = 0;
@@ -320,7 +328,7 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 			phaseSubject->PhaseChanged(player->getName(), 2, "cannot expand further: You have conquered all regions.");
 			break;
 		}
-		// Flying's can conquer regions that aren't linked to their owned region
+
 		if (owned > 0 && player->getBadge()->getName().compare("Flying") != 0) {
 			regions->clear();
 			for (const auto link : m.links) {
@@ -328,9 +336,12 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 				if (m.regions.at(link.region1).owner && m.regions.at(link.region1).owner == player) {
 					if (!(std::find(regions->begin(), regions->end(), link.region2) != regions->end())) {
 						if (!m.regions.at(link.region2).owner || m.regions.at(link.region2).owner != player) {
-							// Holes-in-the-ground may not be conquered
-							if(!m.regions.at(link.region2).hole)
-								regions->push_back(link.region2);
+							// Only seafaring can conquer water regions
+							if (m.regions.at(link.region2).type != m.regions.at(link.region2).WATER ||
+								player->getBadge()->getName().compare("Seafaring") == 0)
+								// Holes-in-the-ground may not be conquered
+								if(!m.regions.at(link.region2).hole)
+									regions->push_back(link.region2);
 						}
 					}
 				}
@@ -339,21 +350,35 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 		else {
 			regions->clear();
 			for (int i = 0; i < m.regions.size(); i++) {
-				// Holes-in-the-ground may not be conquered
-				if (!m.regions.at(i).hole)
-					if(m.regions.at(i).edge)
-						regions->push_back(i);
+				// Only seafaring can conquer water regions
+				if (m.regions.at(i).type != m.regions.at(i).WATER ||
+					player->getBadge()->getName().compare("Seafaring") == 0)
+					// Holes-in-the-ground may not be conquered
+					if (!m.regions.at(i).hole) {
+						// Flying's can conquer regions that aren't linked to their owned region
+						if (player->getBadge()->getName().compare("Flying") == 0 || m.regions.at(i).edge)
+							regions->push_back(i);
+				}
 			}
 		}
 
 		regions->shrink_to_fit();
+		srand(time(NULL));
+		std::random_shuffle(regions->begin(), regions->end());
 
 		int selectedRegion = player->expands(&m, regions);
+
+		bool regionHasOwner = false;
+		
+		if (selectedRegion >= 0)
+			m.regions.at(selectedRegion).owner;
 
 		if (selectedRegion < 0)
 			break;
 		else if (player->conquers(&m, selectedRegion, &dice)) {
 			phaseSubject->PhaseChanged(player->getName(), 2, "captures a region.");
+			if (player->getRace()->getName().compare("Skeletons") == 0 && regionHasOwner)
+				ownedRegionsConquered++;
 		}
 		else {
 			phaseSubject->PhaseChanged(player->getName(), 2, "fails to capture region.");
@@ -366,6 +391,11 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 	regions->clear();
 	for (int i = 0; i < m.regions.size(); i++) {
 		if (m.regions.at(i).owner && m.regions.at(i).owner == player && !m.regions.at(i).decline) {
+			// Bivouacking reclaims all encampments from the map
+			if (player->getBadge()->getName().compare("Bivouacking") == 0 && m.regions.at(i).encampment) {
+				m.regions.at(i).encampment = false;
+				player->getBadge()->setDefense(player->getBadge()->getDefense() + 1);
+			}
 			regions->push_back(i);
 			if (m.regions.at(i).tokens > 1) {
 				player->setTokens(player->getTokens() + m.regions.at(i).tokens - 1);
@@ -373,7 +403,31 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 			}
 		}
 	}
+	srand(time(NULL));
+	std::random_shuffle(regions->begin(), regions->end());
 
+	// Bivouacking redeploys all of their encampments on the map
+	if (player->getBadge()->getName().compare("Bivouacking") == 0) {
+		int mapIndexCounter = 0;
+		while (player->getBadge()->getDefense() > 0) {
+			int region = mapIndexCounter % regions->size();
+			m.regions.at(region).encampment = true;
+			player->getBadge()->setDefense(player->getBadge()->getDefense() - 1);
+			mapIndexCounter++;
+		}
+	}
+
+	// Fortified places 1 fortress per turn to one of their territories that isn't already fortified
+	if (player->getBadge()->getName().compare("Fortified") == 0 && player->getBadge()->getDefense() > 0) {
+		for (int i = 0; i < regions->size(); i++) {
+			if (!m.regions.at(regions->at(i)).fortress) {
+				m.regions.at(regions->at(i)).fortress = true;
+				player->getBadge()->setDefense(player->getBadge()->getDefense() - 1);
+				break;
+			}
+		}
+	}
+		
 	// Amazons lose their 4 extra conquer tokens
 	if (player->getRace()->getName().compare("Amazons") == 0)
 		player->setTokens(player->getTokens() - 4);
@@ -381,8 +435,7 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 	/* Skeletons earn an extra token for every 2 non-empty regions conquered during a turn.
 		To do so, the bonusVictoryCoins is utilized as a counter of the number non-empty regions conquered */
 	if (player->getRace()->getName().compare("Skeletons") == 0) {
-		player->setTokens(player->getTokens() + player->getBonusCoins() / 2);
-		player->setBonusCoins(0);
+		player->setTokens(player->getTokens() + ownedRegionsConquered / 2);
 	}
 
 	if (regions->size() == 0)
@@ -488,6 +541,8 @@ void Tournament::run() {
 	}
 	cout << "\n" << winner << " wins with a score of " << winningScore << " victory points!" << endl << endl;
 	dice.printRollPercentage();
+
+	system("PAUSE");
 
 	//Destroy all pointer values
 	delete phaseSubject;

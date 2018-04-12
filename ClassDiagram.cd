@@ -1,429 +1,429 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Aggressive" Collapsed="true">
-    <Position X="0.5" Y="0.5" Width="1.5" />
+  <Class Name="Aggressive">
+    <Position X="13.25" Y="16.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAIAAEAIQAAAAAAAA=</HashCode>
       <FileName>src\Strategy.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Badge" Collapsed="true">
-    <Position X="24.5" Y="3.75" Width="1.5" />
+  <Class Name="Badge">
+    <Position X="23.25" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAAACAEAAAAAAAEAAAgAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAICAAAAAAAACAEAAAAAACEAAAgAAI=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Alchemist" Collapsed="true">
-    <Position X="7.5" Y="5" Width="1.5" />
+  <Class Name="Alchemist">
+    <Position X="6.25" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Berserk" Collapsed="true">
-    <Position X="14.25" Y="5" Width="1.5" />
+  <Class Name="Berserk">
+    <Position X="13" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Bivouacking" Collapsed="true">
-    <Position X="21" Y="5" Width="1.5" />
+  <Class Name="Bivouacking">
+    <Position X="19.75" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Commando" Collapsed="true">
-    <Position X="27.75" Y="5" Width="1.5" />
+  <Class Name="Commando">
+    <Position X="26.5" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Diplomat" Collapsed="true">
-    <Position X="34.5" Y="5" Width="1.5" />
+  <Class Name="Diplomat">
+    <Position X="33.25" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DragonMaster" Collapsed="true">
-    <Position X="39" Y="5" Width="1.5" />
+  <Class Name="DragonMaster">
+    <Position X="37.75" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAgAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Flying" Collapsed="true">
-    <Position X="43.5" Y="5" Width="1.5" />
+  <Class Name="Flying">
+    <Position X="42.25" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Forest" Collapsed="true">
-    <Position X="3" Y="5" Width="1.5" />
+  <Class Name="Forest">
+    <Position X="1.75" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Fortified" Collapsed="true">
-    <Position X="9.75" Y="5" Width="1.5" />
+  <Class Name="Fortified">
+    <Position X="8.5" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Heroic" Collapsed="true">
-    <Position X="16.5" Y="5" Width="1.5" />
+  <Class Name="Heroic">
+    <Position X="15.25" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAACAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Hill" Collapsed="true">
-    <Position X="23.25" Y="5" Width="1.5" />
+  <Class Name="Hill">
+    <Position X="22" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Merchant" Collapsed="true">
-    <Position X="30" Y="5" Width="1.5" />
+  <Class Name="Merchant">
+    <Position X="28.75" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Mounted" Collapsed="true">
-    <Position X="36.75" Y="5" Width="1.5" />
+  <Class Name="Mounted">
+    <Position X="35.5" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Pillaging" Collapsed="true">
-    <Position X="41.25" Y="5" Width="1.5" />
+  <Class Name="Pillaging">
+    <Position X="40" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Seafaring" Collapsed="true">
-    <Position X="45.75" Y="5" Width="1.5" />
+  <Class Name="Seafaring">
+    <Position X="44.5" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Spirit" Collapsed="true">
-    <Position X="5.25" Y="5" Width="1.5" />
+  <Class Name="Spirit">
+    <Position X="4" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Stout" Collapsed="true">
-    <Position X="12" Y="5" Width="1.5" />
+  <Class Name="Stout">
+    <Position X="10.75" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Swamp" Collapsed="true">
-    <Position X="18.75" Y="5" Width="1.5" />
+  <Class Name="Swamp">
+    <Position X="17.5" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Underworld" Collapsed="true">
-    <Position X="25.5" Y="5" Width="1.5" />
+  <Class Name="Underworld">
+    <Position X="24.25" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Wealthy" Collapsed="true">
-    <Position X="32.25" Y="5" Width="1.5" />
+  <Class Name="Wealthy">
+    <Position X="31" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Badge.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Deck" Collapsed="true">
-    <Position X="13.5" Y="9.75" Width="1.5" />
+  <Class Name="Deck">
+    <Position X="33.75" Y="13" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAhAAIAAAAAACAAAAAAAAAAABCBAiAAAAAQ=</HashCode>
+      <HashCode>AAAAAAAAAAhAAIAAAAAACAAAAAAAAAAABCBACAAAAAQ=</HashCode>
       <FileName>src\Deck.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dice" Collapsed="true">
-    <Position X="15.25" Y="9.75" Width="1.5" />
+  <Class Name="Dice">
+    <Position X="33.75" Y="17" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAACAAAAAAAAAAAAAAAAAgAAgQAAAAAAAAAAEAAAo=</HashCode>
       <FileName>src\Dice.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="FantasyRaceBanner" Collapsed="true">
-    <Position X="17" Y="6.75" Width="1.5" />
+  <Class Name="FantasyRaceBanner">
+    <Position X="27.5" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAACAEAAAAAAAEAAAgAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAIACAAAAAAAACAEAAAAAACEAAAgAAI=</HashCode>
       <FileName>src\FantasyRaceBanner.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Amazons" Collapsed="true">
-    <Position X="2.25" Y="8" Width="1.5" />
+  <Class Name="Amazons">
+    <Position X="12.75" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\FantasyRaceBanner.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dwarves" Collapsed="true">
-    <Position X="6.75" Y="8" Width="1.5" />
+  <Class Name="Dwarves">
+    <Position X="17.25" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
       <FileName>src\FantasyRaceBanner.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Elves" Collapsed="true">
-    <Position X="11.25" Y="8" Width="1.5" />
+  <Class Name="Elves">
+    <Position X="21.75" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
       <FileName>src\FantasyRaceBanner.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Ghouls" Collapsed="true">
-    <Position X="15.75" Y="8" Width="1.5" />
+  <Class Name="Ghouls">
+    <Position X="26.25" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
       <FileName>src\FantasyRaceBanner.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Giants" Collapsed="true">
-    <Position X="20.25" Y="8" Width="1.5" />
+  <Class Name="Giants">
+    <Position X="30.75" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\FantasyRaceBanner.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Halflings" Collapsed="true">
-    <Position X="24.75" Y="8" Width="1.5" />
+  <Class Name="Halflings">
+    <Position X="35.25" Y="10.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\FantasyRaceBanner.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Humans" Collapsed="true">
-    <Position X="29.25" Y="8" Width="1.5" />
+  <Class Name="Humans">
+    <Position X="39.75" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
       <FileName>src\FantasyRaceBanner.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Orcs" Collapsed="true">
-    <Position X="31.5" Y="8" Width="1.5" />
+  <Class Name="Orcs">
+    <Position X="42" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\FantasyRaceBanner.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Ratmen" Collapsed="true">
-    <Position X="4.5" Y="8" Width="1.5" />
+  <Class Name="Ratmen">
+    <Position X="15" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\FantasyRaceBanner.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Skeletons" Collapsed="true">
-    <Position X="9" Y="8" Width="1.5" />
+  <Class Name="Skeletons">
+    <Position X="19.5" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\FantasyRaceBanner.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Sorcerers" Collapsed="true">
-    <Position X="13.5" Y="8" Width="1.5" />
+  <Class Name="Sorcerers">
+    <Position X="24" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\FantasyRaceBanner.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Tritons" Collapsed="true">
-    <Position X="18" Y="8" Width="1.5" />
+  <Class Name="Tritons">
+    <Position X="28.5" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\FantasyRaceBanner.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Trolls" Collapsed="true">
-    <Position X="22.5" Y="8" Width="1.5" />
+  <Class Name="Trolls">
+    <Position X="33" Y="10.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAgAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
       <FileName>src\FantasyRaceBanner.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Wizards" Collapsed="true">
-    <Position X="27" Y="8" Width="1.5" />
+  <Class Name="Wizards">
+    <Position X="37.5" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
       <FileName>src\FantasyRaceBanner.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Map" Collapsed="true">
-    <Position X="17" Y="9.75" Width="1.5" />
+  <Class Name="Map">
+    <Position X="27.75" Y="13" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAgAAAAAABAAAAMAAAAAAAACAAAIAAAAAAAAAAAAYAE=</HashCode>
+      <HashCode>AAgAAAAAABAAAAMAAAAABAACAAAIAAAAAAAAAAAAYAE=</HashCode>
       <FileName>src\Map.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MapReader" Collapsed="true">
-    <Position X="13.5" Y="10.75" Width="1.5" />
+  <Class Name="MapReader">
+    <Position X="22.25" Y="13" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAQAAAAAAAAAACAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
       <FileName>src\MapReader.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Observer" Collapsed="true">
-    <Position X="5.75" Y="12.75" Width="1.5" />
+  <Class Name="Observer">
+    <Position X="5.75" Y="13.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAECAA=</HashCode>
       <FileName>src\Observer.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Subject" Collapsed="true">
-    <Position X="5.75" Y="9.75" Width="1.5" />
+  <Class Name="Subject">
+    <Position X="5.75" Y="7.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAIAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
       <FileName>src\Observer.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TurnSubject" Collapsed="true">
+  <Class Name="TurnSubject">
     <Position X="8" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAABAAAAAAAAAAA=</HashCode>
       <FileName>src\Observer.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BaseObserver" Collapsed="true">
-    <Position X="8" Y="14" Width="1.5" />
+  <Class Name="BaseObserver">
+    <Position X="8" Y="16.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAEAAA=</HashCode>
       <FileName>src\Observer.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PhaseSubject" Collapsed="true">
+  <Class Name="PhaseSubject">
     <Position X="10.25" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAACABAAAEAAAAAAA=</HashCode>
       <FileName>src\Observer.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PhaseObserver" Collapsed="true">
-    <Position X="10.25" Y="14" Width="1.5" />
+  <Class Name="PhaseObserver">
+    <Position X="10.25" Y="16.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAIAAAAAAEAAA=</HashCode>
       <FileName>src\Observer.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ObserverWrapper" Collapsed="true">
-    <Position X="3.5" Y="14" Width="1.5" />
+  <Class Name="ObserverWrapper">
+    <Position X="3.5" Y="16.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAIEAAAAAAAAAEAAA=</HashCode>
       <FileName>src\Observer.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DominionSubject" Collapsed="true">
+  <Class Name="DominionSubject">
     <Position X="1.25" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAIAAAAAAAAQA=</HashCode>
       <FileName>src\Observer.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="HandSubject" Collapsed="true">
+  <Class Name="HandSubject">
     <Position X="3.5" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAIAAAAABAAAA=</HashCode>
       <FileName>src\Observer.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PointsSubject" Collapsed="true">
+  <Class Name="PointsSubject">
     <Position X="5.75" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAIAAAAA=</HashCode>
       <FileName>src\Observer.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DominionObserver" Collapsed="true">
-    <Position X="1.25" Y="15.5" Width="1.5" />
+  <Class Name="DominionObserver">
+    <Position X="1.25" Y="19.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAAAEAAA=</HashCode>
       <FileName>src\Observer.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="HandObserver" Collapsed="true">
-    <Position X="3.5" Y="15.5" Width="1.5" />
+  <Class Name="HandObserver">
+    <Position X="3.5" Y="19.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAgAAAAAAAEAAA=</HashCode>
       <FileName>src\Observer.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PointsObserver" Collapsed="true">
-    <Position X="5.75" Y="15.5" Width="1.5" />
+  <Class Name="PointsObserver">
+    <Position X="5.75" Y="19.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAQAAAAAAAAAEAAA=</HashCode>
       <FileName>src\Observer.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Player" Collapsed="true">
-    <Position X="15.25" Y="10.75" Width="1.5" />
+  <Class Name="Player">
+    <Position X="24.75" Y="13" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>kAAkAEAQAAhAAAACABAIAAAQAACEIAIEAIQECQggAIA=</HashCode>
+      <HashCode>mAAAAEAQAAlAAAAAABAIAAAAAACFIAIEAIQECUggAJg=</HashCode>
       <FileName>src\Player.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Strategy" Collapsed="true">
-    <Position X="0.5" Y="0.5" Width="1.5" />
+  <Class Name="Strategy">
+    <Position X="17.75" Y="13" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAIAABAIQAABAAAAA=</HashCode>
       <FileName>src\Strategy.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Defensive" Collapsed="true">
-    <Position X="3.5" Y="1.75" Width="1.5" />
+  <Class Name="Defensive">
+    <Position X="19.25" Y="16.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAIAAAAIQAAAAAAAg=</HashCode>
       <FileName>src\Strategy.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Moderate" Collapsed="true">
-    <Position X="5.75" Y="1.75" Width="1.5" />
+  <Class Name="Moderate">
+    <Position X="16.25" Y="16.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAQAAAAAAAABAAAAAAAAAAIAAAAIQAAAAAAAA=</HashCode>
       <FileName>src\Strategy.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Random" Collapsed="true">
-    <Position X="8" Y="1.75" Width="1.5" />
+  <Class Name="Random">
+    <Position X="22.25" Y="16.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAJAAAAIQAAAAAAAA=</HashCode>
       <FileName>src\Strategy.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Struct Name="mapLink" Collapsed="true">
-    <Position X="13.5" Y="12" Width="1.5" />
+  <Struct Name="mapLink">
+    <Position X="27.75" Y="17" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAEAAABAAAAAAA=</HashCode>
       <FileName>src\Map.h</FileName>
     </TypeIdentifier>
   </Struct>
-  <Struct Name="region" Collapsed="true">
-    <Position X="15.25" Y="12" Width="1.5" />
+  <Struct Name="region">
+    <Position X="30.75" Y="13" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAmAAAAAAAAAgAAAAgAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAmAAAgAAggAgACAAAAABAAAAAolAAAECAQAABCAABA=</HashCode>
       <FileName>src\Map.h</FileName>
     </TypeIdentifier>
   </Struct>

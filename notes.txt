@@ -1,0 +1,23 @@
+Mine regions
+
+2PLAYER
+R2
+R5
+R15
+R18
+
+3PLAYER
+R1
+R6
+R10
+R12
+R29
+
+4PLAYER
+R7
+R9
+R19
+R20
+R22
+R32
+R35

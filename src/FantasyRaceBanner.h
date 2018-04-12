@@ -133,6 +133,9 @@ public:
 	Ratmen();
 };
 
+/**
+* Skill: During redeployment, earn 1 new race token for every 2 non-empty Regions you conquered this turn.
+*/
 class Skeletons : public FantasyRaceBanner {
 private:
 

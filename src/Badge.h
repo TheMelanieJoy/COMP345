@@ -65,6 +65,9 @@ public:
 	Berserk();
 };
 
+/**
+* Skill: Deploy the 5 Encampment tokens in any of your Region(s), during your Troop Redeployment phase. 
+*/
 class Bivouacking : public Badge {
 private:
 
@@ -116,6 +119,9 @@ public:
 	Forest();
 };
 
+/**
+* Skill: Once per turn, as long as your Fortified Race is active, you may place 1 Fortress in a Region you occupy.
+*/
 class Fortified : public Badge {
 private:
 
@@ -170,6 +176,9 @@ public:
 	Pillaging();
 };
 
+/**
+* Skill: As long as your Seafaring race is active, you may conquer the Seas and the Lake.
+*/
 class Seafaring : public Badge {
 private:
 

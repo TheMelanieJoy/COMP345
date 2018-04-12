@@ -161,12 +161,6 @@ bool Player::conquers(Map* m, size_t region, Dice* dice) {
 			if (getBadge()->getName().compare("Pillaging") == 0)
 				setBonusCoins(bonusVictoryCoins + 1);
 
-			// Skeletons don't earn bonus coins, but utilize the method for their own skill
-			if (m->regions.at(region).owner->getRace() != NULL && m->regions.at(region).owner->getBadge() != NULL &&
-				getRace()->getName().compare("Skeletons") == 0) {
-
-				setBonusCoins(bonusVictoryCoins + 1);
-			}
 			// Elves get back all of their tokens when their region has been conquered by an enemy
 			if (m->regions.at(region).owner->getRace() != NULL && m->regions.at(region).owner->getRace()->getName().compare("Elves") == 0)
 				m->regions.at(region).owner->setTokens(m->regions.at(region).owner->raceTokens + m->regions.at(region).tokens);
@@ -251,7 +245,7 @@ int Player::scores(Map * m) {
 				if (region.type == region.SWAMP)
 					setBonusCoins(bonusVictoryCoins + 1);
 
-			// Wizards earn an extra victory coin for each magic region occupied
+			// Fortified earn an extra victory coin for each region occupied containing a fortress
 			if (getBadge() != NULL && getBadge()->getName().compare("Fortified") == 0)
 				if (region.fortress)
 					setBonusCoins(bonusVictoryCoins + 1);
@@ -260,6 +254,11 @@ int Player::scores(Map * m) {
 			if (getRace() != NULL && getRace()->getName().compare("Wizards") == 0)
 				if (region.magic)
 					setBonusCoins(bonusVictoryCoins + 1);
+
+			// Dwarves earn an extra victory coin for each mine region occupied
+			/*if (getRace() != NULL && getRace()->getName().compare("Dwarves") == 0)
+				if (region.mine)
+					setBonusCoins(bonusVictoryCoins + 1);*/
 		}
 	}
 
