@@ -105,7 +105,7 @@ bool Player::conquers(Map* m, size_t region, Dice* dice) {
 	int neededTokens = m->regions.at(region).tokens + 2;
 
 	// Defenses increase the number of needed tokens
-	if (m->regions.at(region).mountain)
+	if (m->regions.at(region).type == m->regions.at(region).MOUNTAIN)
 		neededTokens++;
 	if (m->regions.at(region).encampment)
 		neededTokens++;
@@ -197,7 +197,7 @@ bool Player::conquers(Map* m, size_t region, Dice* dice) {
 		// Trolls place a lair on each occupied region
 		if (race->getName().compare("Trolls") == 0) {
 			if (!m->regions.at(region).lair && race->getDefense() > 0) {
-				m->regions.at(region).lair == true;
+				m->regions.at(region).lair = true;
 				race->setDefense(race->getDefense() - 1);
 			}
 		}
@@ -205,7 +205,7 @@ bool Player::conquers(Map* m, size_t region, Dice* dice) {
 		// Halflings place a hole-in-the-ground on their first 2 occupied regions
 		if (race->getName().compare("Halflings") == 0) {
 			if (!m->regions.at(region).hole && race->getDefense() > 0) {
-				m->regions.at(region).hole == true;
+				m->regions.at(region).hole = true;
 				race->setDefense(race->getDefense() - 1);
 			}
 		}

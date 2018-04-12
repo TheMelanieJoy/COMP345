@@ -1,0 +1,4 @@
+﻿  Player.cpp
+SmallWorld.obj : error LNK2019: unresolved external symbol "public: __thiscall Tournament::Tournament(int)" (??0Tournament@@QAE@H@Z) referenced in function __catch$_main$0
+SmallWorld.obj : error LNK2019: unresolved external symbol "public: void __thiscall Tournament::run(void)" (?run@Tournament@@QAEXXZ) referenced in function __catch$_main$0
+C:\Users\Gecky\Desktop\COMP345-master\Debug\COMP345.exe : fatal error LNK1120: 2 unresolved externals
