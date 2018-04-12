@@ -89,9 +89,72 @@ struct region
 		
 	}
 
-	//std::string describe() {
-	//
-	//}
+	std::string toString() {
+		string ret = name;
+
+		switch (type)
+		{
+		case (1):
+			ret = "Hill " + ret;
+			break;
+		case (2):
+			ret = "Mountain " + ret;
+			break;
+		case (3):
+			ret = "Farmland " + ret;
+			break;
+		case (4):
+			ret = "Forest " + ret;
+			break;
+		case (5):
+			ret = "Swamp " + ret;
+			break;
+		case (6):
+			ret = "Water " + ret;
+			break;
+		}
+
+		if (magic)
+			ret = "Magic " + ret;
+
+		if (edge)
+			ret += " at the edge";
+
+		if (cavern || hole || lair || encampment || fortress) {
+			ret += " with a ";
+			bool and = false;
+			if (hole) {
+				ret += "Hole-In-The-Ground ";
+				and = true;
+			}
+			if (lair) {
+				if (and)
+					ret += "and a ";
+				ret += "Lair ";
+				and = true;
+			}
+			if (encampment) {
+				if (and)
+					ret += "and an ";
+				ret += "Encampment ";
+				and = true;
+			}
+			if (fortress) {
+				if (and)
+					ret += "and a ";
+				ret += "Fortress ";
+				and = true;
+			}
+			if (cavern) {
+				if (and)
+					ret += "and a ";
+				ret += "Cavern ";
+				and = true;
+			}
+
+		}
+		return ret;
+	}
 };
 
 class Map {
@@ -130,4 +193,6 @@ public:
 	bool empty();
 
 	void decline(Player*);
+
+	string toString();
 };

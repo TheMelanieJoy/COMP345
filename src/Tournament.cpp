@@ -165,6 +165,8 @@ void Tournament::setup() {
 	MapReader mr = MapReader(mapDirectory);
 	m = mr.makeMap();
 
+	cout << m.toString() << endl;
+
 	//Gets names for all players
 	for (int i = 0; i < numberOfPlayers; i++) {
 		players.push_back(new Player("Player " + to_string(i + 1)));
@@ -339,7 +341,8 @@ void Tournament::expanding(Player* player, vector<size_t>* regions) {
 			for (int i = 0; i < m.regions.size(); i++) {
 				// Holes-in-the-ground may not be conquered
 				if (!m.regions.at(i).hole)
-					regions->push_back(i);
+					if(m.regions.at(i).edge)
+						regions->push_back(i);
 			}
 		}
 

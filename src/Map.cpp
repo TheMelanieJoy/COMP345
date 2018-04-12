@@ -130,3 +130,14 @@ void Map::decline(Player* p)
 		}
 	}
 }
+
+string Map::toString()
+{
+	string ret = "Map:\n";
+
+	for (auto region : regions) {
+		ret += region.toString() + "\n";
+	}
+
+	return ret;
+}

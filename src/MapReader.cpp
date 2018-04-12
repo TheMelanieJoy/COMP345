@@ -79,6 +79,8 @@ Map MapReader::makeMap() {
 
 	int stage = 0;
 
+	char type = '0';
+
 
 	//go through the map getting all region names until we reach the links
 	while (c != '[') {
@@ -107,24 +109,26 @@ Map MapReader::makeMap() {
 				stage++;
 				pos++;
 				c = words.at(word)[pos];
+				//cout << c;
 				if (c == '1') {
 					switch (stage)
 					{
-					case 0: tribal = true;
+					case 1: tribal = true;
 						break;
-					case 1: coastal = true;
+					case 2: coastal = true;
 						break;
-					case 2: magic = true;
+					case 3: magic = true;
 						break;
-					case 3: cavern = true;
+					case 4: cavern = true;
 						break;
 					default:
 						break;
 					}
 				}
 			}
+			//cout << endl;
 
-			m.addRegion(s, c, tribal, coastal, magic, cavern);
+			m.addRegion(s, type, tribal, coastal, magic, cavern);
 
 			word++;
 			pos = 0;
@@ -132,13 +136,20 @@ Map MapReader::makeMap() {
 			c = words.at(word)[pos];
 			details = false;
 			named = false;
+			stage = 0;
 
+
+			tribal = false;
+			coastal = false;
+			magic = false;
+			cavern = false;
 		}
 		else {
 			if (c == ',') {
 				details = true;
 				pos++;
 				c = words.at(word)[pos];
+				type = c;
 				//m.addRegion(s, c);
 				
 				//word++;
