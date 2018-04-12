@@ -48,9 +48,9 @@ void Map::addRegion(string name, char type) {
 	
 }
 
-void Map::addRegion(string name, char type, bool tribal, bool coastal, bool magic, bool cavern) {
+void Map::addRegion(string name, char type, bool tribal, bool coastal, bool magic, bool cavern, bool mine) {
 	//cout << "added a region" << endl;
-	regions.push_back(region(name, (int) type - '0', tribal, coastal, magic, cavern));
+	regions.push_back(region(name, (int) type - '0', tribal, coastal, magic, cavern, mine));
 }
 
 void Map::addLink(const size_t region1Index, const size_t region2Index) {

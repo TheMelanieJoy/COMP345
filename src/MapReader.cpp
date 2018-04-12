@@ -76,6 +76,7 @@ Map MapReader::makeMap() {
 	bool coastal = false;
 	bool magic = false;
 	bool cavern = false;
+	bool mine = false;
 
 	int stage = 0;
 
@@ -101,7 +102,7 @@ Map MapReader::makeMap() {
 			c = words.at(word)[pos];
 		}
 		else if (details) {
-			while (stage < 4) {
+			while (stage < 5) {
 				if (words.at(word).size() <= pos) {
 					std::cout << "Illegal map." << endl;
 					return Map(0, 0);
@@ -121,6 +122,8 @@ Map MapReader::makeMap() {
 						break;
 					case 4: cavern = true;
 						break;
+					case 5: mine = true;
+						break;
 					default:
 						break;
 					}
@@ -128,7 +131,7 @@ Map MapReader::makeMap() {
 			}
 			//cout << endl;
 
-			m.addRegion(s, type, tribal, coastal, magic, cavern);
+			m.addRegion(s, type, tribal, coastal, magic, cavern, mine);
 
 			word++;
 			pos = 0;
@@ -143,6 +146,7 @@ Map MapReader::makeMap() {
 			coastal = false;
 			magic = false;
 			cavern = false;
+			mine = false;
 		}
 		else {
 			if (c == ',') {

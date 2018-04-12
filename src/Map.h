@@ -53,6 +53,8 @@ struct region
 
 	bool cavern;
 
+	bool mine;
+
 
 	//parameters that are generated in game
 	bool hole = false;
@@ -76,7 +78,7 @@ struct region
 		else
 			tokens = 0;
 	}
-	region(string n, int ty, bool tri, bool co, bool ma, bool ca) : name(n), type(ty), edge(co), magic(ma), cavern(ca) {
+	region(string n, int ty, bool tri, bool co, bool ma, bool ca, bool mi) : name(n), type(ty), edge(co), magic(ma), cavern(ca), mine(mi) {
 		if (tri) {
 			tokens = 1;
 			decline = true;
@@ -120,7 +122,7 @@ struct region
 		if (edge)
 			ret += " at the edge";
 
-		if (cavern || hole || lair || encampment || fortress) {
+		if (cavern || hole || lair || encampment || fortress || mine) {
 			ret += " with a ";
 			bool and = false;
 			if (hole) {
@@ -151,6 +153,12 @@ struct region
 				ret += "Cavern ";
 				and = true;
 			}
+			if (mine) {
+				if (and)
+					ret += "and a ";
+				ret += "Mine ";
+				and = true;
+			}
 
 		}
 		return ret;
@@ -179,7 +187,7 @@ public:
 	//simply adds a new region of the chosen name
 	void addRegion(string, char type);
 
-	void addRegion(string, char type, bool tribal, bool coastal, bool magic, bool cavern);
+	void addRegion(string, char type, bool tribal, bool coastal, bool magic, bool cavern, bool mine);
 
 	//adds a new link between 2 regions
 	void addLink(const size_t, const size_t);
