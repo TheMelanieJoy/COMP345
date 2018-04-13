@@ -89,6 +89,7 @@ Map MapReader::makeMap() {
 
 		//go through the map getting all region names until we reach the links
 		while (c != '[') {
+			//part where we get the region name
 			if (c == '=') {
 				named = true;
 				pos++;
@@ -105,6 +106,7 @@ Map MapReader::makeMap() {
 
 				c = words.at(word)[pos];
 			}
+			//part where we check for special attributes in the region
 			else if (details) {
 				while (stage < 5) {
 					if (words.at(word).size() <= pos) {
@@ -114,7 +116,6 @@ Map MapReader::makeMap() {
 					stage++;
 					pos++;
 					c = words.at(word)[pos];
-					//cout << c;
 					if (c == '1') {
 						switch (stage)
 						{
@@ -133,7 +134,6 @@ Map MapReader::makeMap() {
 						}
 					}
 				}
-				//cout << endl;
 
 				m.addRegion(s, type, tribal, coastal, magic, cavern, mine);
 
@@ -152,6 +152,7 @@ Map MapReader::makeMap() {
 				cavern = false;
 				mine = false;
 			}
+			//Part where we get the type of the region
 			else {
 				if (c == ',') {
 					details = true;
