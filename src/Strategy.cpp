@@ -36,6 +36,7 @@ int Aggressive::abandons(Map* map, vector<size_t>* regions) {
 They stop conquering once they run out of race tokens */
 int Aggressive::expands(Map* map, vector<size_t>* regions) {
 	int weakestRegion = 0;
+	// Finds region with the least amount of tokens
 	int weakestRegionTokens = map->regions.at(0).tokens;
 	for (int i = 1; i < regions->size() - 1; i++) {
 		int temp = map->regions.at(i).tokens;
@@ -54,6 +55,7 @@ std::tuple<int, int> Aggressive::redeploys(Map* map, vector<size_t>* regions) {
 	int selectedRegion = rand() % regions->size();
 	int numberOfTokens = player->getTokens();
 
+	// Tokens are placed from the player's possessions to the map
 	player->setTokens(player->getTokens() - numberOfTokens);
 	map->regions.at(regions->at(selectedRegion)).tokens += numberOfTokens;
 	return std::make_tuple(selectedRegion, numberOfTokens);
@@ -86,6 +88,7 @@ int Defensive::expands(Map* map, vector<size_t>* regions) {
 	else {
 		int strongestRegion = 0;
 		int strongestRegionTokens = map->regions.at(0).tokens;
+		// Finds region with the most tokens
 		for (int i = 1; i < regions->size() - 1; i++) {
 			int temp = map->regions.at(i).tokens;
 			if (temp < strongestRegionTokens) {
@@ -104,9 +107,11 @@ std::tuple<int, int> Defensive::redeploys(Map* map, vector<size_t>* regions) {
 	int selectedRegion = 0;
 	int i = 2;
 
+	// Places a token at a time to each region.
 	while (!redeployDone) {
 		if (map->regions.at(regions->at(selectedRegion)).tokens < i)
 			redeployDone = true;
+		// If all regions contain the same amount of tokens and there are still tokens to redeploy, the process loops back to the first selected region
 		else if (selectedRegion == regions->size() - 1) {
 			i++;
 			selectedRegion = 0;
@@ -115,6 +120,7 @@ std::tuple<int, int> Defensive::redeploys(Map* map, vector<size_t>* regions) {
 			selectedRegion++;
 	}
 
+	// Tokens are placed from the player's possessions to the map
 	player->setTokens(player->getTokens() - numberOfTokens);
 	map->regions.at(regions->at(selectedRegion)).tokens += numberOfTokens;
 	return std::make_tuple(selectedRegion, numberOfTokens);
@@ -159,6 +165,7 @@ int Moderate::expands(Map* map, vector<size_t>* regions) {
 	else {
 		int weakestRegion = 0;
 		int weakestRegionTokens = map->regions.at(0).tokens;
+		// Finds region with the least amount of tokens
 		for (int i = 1; i < regions->size() - 1; i++) {
 			int temp = map->regions.at(i).tokens;
 			if (temp < weakestRegionTokens) {
@@ -180,6 +187,7 @@ std::tuple<int, int> Moderate::redeploys(Map* map, vector<size_t>* regions) {
 	while (!redeployDone) {
 		if (map->regions.at(regions->at(selectedRegion)).tokens < i)
 			redeployDone = true;
+		// If the player placed tokens to all regions and there are still tokens to redeploy, the process loops back to the first selected region
 		else if (selectedRegion == regions->size() - 1) {
 			i++;
 			selectedRegion = 0;
@@ -187,6 +195,7 @@ std::tuple<int, int> Moderate::redeploys(Map* map, vector<size_t>* regions) {
 		else
 			selectedRegion++;
 	}
+	// Tokens are placed from the player's possessions to the map
 	player->setTokens(player->getTokens() - numberOfTokens);
 	map->regions.at(regions->at(selectedRegion)).tokens += numberOfTokens;
 	return std::make_tuple(selectedRegion, numberOfTokens);
@@ -237,6 +246,7 @@ std::tuple<int, int> Random::redeploys(Map* map, vector<size_t>* regions) {
 	int numberOfTokens = (rand() % player->getTokens()) + 1;
 	if (numberOfTokens == 0) numberOfTokens = 1;
 
+	// Tokens are placed from the player's possessions to the map
 	player->setTokens(player->getTokens() - numberOfTokens);
 	map->regions.at(regions->at(selectedRegion)).tokens += numberOfTokens;
 	return std::make_tuple(selectedRegion, numberOfTokens);

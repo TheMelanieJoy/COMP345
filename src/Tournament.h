@@ -9,6 +9,9 @@
 #include <iostream>
 #include <vector>
 
+/**
+* The tournament class prepares and executes a tournament (a full game of Small World) based on the number of players.
+*/
 class Tournament {
 private:
 	// Constants

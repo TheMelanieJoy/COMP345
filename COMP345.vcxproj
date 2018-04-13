@@ -116,6 +116,7 @@
     <ClInclude Include="src\Badge.h" />
     <ClInclude Include="src\Deck.h" />
     <ClInclude Include="src\Dice.h" />
+    <ClInclude Include="src\Exception.h" />
     <ClInclude Include="src\FantasyRaceBanner.h" />
     <ClInclude Include="src\Map.h" />
     <ClInclude Include="src\MapReader.h" />

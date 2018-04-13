@@ -4,6 +4,9 @@
 #include <string>
 using namespace std;
 
+/**
+* The badge is a propriety that defines special skills granted to a player
+*/
 class Badge {
 private:
 	/** The badge's name */

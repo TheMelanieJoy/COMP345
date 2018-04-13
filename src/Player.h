@@ -8,6 +8,9 @@
 class Map;
 class Strategy;
 
+/**
+* The player holds game pieces and executes turns.
+*/
 class Player {
 private:
 	/* The player's name */

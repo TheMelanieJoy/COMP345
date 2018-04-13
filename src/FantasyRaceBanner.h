@@ -4,6 +4,9 @@
 #include <string>
 using namespace std;
 
+/**
+* The race define special skills and tokens granted to the player
+*/
 class FantasyRaceBanner {
 private:
 	/* The race's name */
