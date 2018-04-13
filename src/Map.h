@@ -197,12 +197,18 @@ public:
 	// Checks if all regions are linked
 	bool linked();
 
+	//Checks if the map has any regions
 	bool empty();
 
+	//Called when a player declines
+	//Every region they used to own is noted as declined
+	//Every already region they owned loses its tokens
 	void decline(Player*);
 
+	//Gets a string version of this map
 	string toString();
 
+	//Overloads the << operator to return a string representation of the map
 	friend ostream &operator<<(ostream &output, Map &m) {
 		output << m.toString();
 		return output;
